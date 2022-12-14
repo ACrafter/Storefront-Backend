@@ -9,7 +9,7 @@ app.use(Express.json());
 app.use(Express.urlencoded());
 
 app.get("/", (req: Express.Request, res: Express.Response) => {
-  res.send("Hello World!");
+  res.send("<h1>API Main Endpoints</h1><ul><li>Users</li><li>Orders</li><li>Products</li></ul>");
 });
 
 userRoutes(app);
