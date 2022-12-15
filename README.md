@@ -39,4 +39,19 @@ A Fully Functional Express RESTful API meant to support a ECommerce website. Com
 The API supports three main tables Users, Orders, Products. Where a 1:N relation exists between the Users & Orders tables and a N:M relation exists between the Orders & Products tables. Some RESTful Routes require the JWT token to be accessed. The project was constructed using the TDD approach. 
 
 ---
+
+## ENV Variables
+
+- ENV="dev"
+- HOST="localhost"
+- DB = "market"
+- TESTDB = "markettest"
+- USER = "postgres"
+- PASS = "12345"
+- SECRET = "I-will-show-you-the-world"
+- SALT_ROUNDS = 10
+- TOKEN = 'shinning-shimmring-splended'
+
+---
+
 *This project was made as a part of EgyFwd Advanced Web Track Training*
