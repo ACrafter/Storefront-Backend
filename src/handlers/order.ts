@@ -54,12 +54,22 @@ const del = async (
   res.json(result);
 };
 
+const userOrders = async (
+  req: Express.Request,
+  res: Express.Response
+): Promise<void> => {
+  const id: String = req.params.id;
+  const result = await store.getOrdersByUser(id);
+  res.json(result);
+};
+
 const ordersRoutes = (app: Express.Application): void => {
   app.get("/orders", index);
   app.post("/orders", create);
   app.get("/orders/:id", show);
   app.patch("/orders/:id", update);
   app.delete("/orders/:id", del);
+  app.delete("/orders/user/:id", userOrders);
 };
 
 export default ordersRoutes;

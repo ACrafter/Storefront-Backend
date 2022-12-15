@@ -6,7 +6,7 @@ describe("Order Model", () => {
   const U = new UserStore();
 
   beforeAll(async () => {
-    await U.create({
+  await U.create({
       username: "ACrafter",
       firstname: "Ahmed",
       pass: "123",
@@ -59,6 +59,17 @@ describe("Order Model", () => {
     it("should return the updated user", async () => {
       const res = await O.update("status", "Completed", "1");
       expect(res).toEqual({ userid: 1, weight: 50, status: "Completed" });
+    });
+  });
+
+  describe("Get User's Order  Method", () => {
+    it("should exist", () => {
+      expect(O.getOrdersByUser).toBeDefined();
+    });
+
+    it("should return the updated user", async () => {
+      const res = await O.getOrdersByUser("1");
+      expect(res).toEqual([{ id:1, weight: 50, status: "Completed" }]);
     });
   });
 

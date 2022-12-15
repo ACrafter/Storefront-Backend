@@ -108,5 +108,20 @@ class OrderStore {
             }
         });
     }
+    // Methods specific to the model
+    getOrdersByUser(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const connection = yield database_1.default.connect(); // Opening the connection
+                const sql = "SELECT id, weight, status FROM orders WHERE userid=($1)"; // Defining the SQL query
+                const result = yield connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
+                connection.release(); // Closing the connection
+                return result.rows; // Returning the result
+            }
+            catch (err) {
+                throw new Error(`Couldn't update Order who's id=${id}: ${err}`);
+            }
+        });
+    }
 }
 exports.OrderStore = OrderStore;

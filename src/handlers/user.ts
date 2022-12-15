@@ -12,13 +12,13 @@ const index = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-    const authorizationHeader = req.body.token
-    const token = authorizationHeader.split(' ')[1]
-    verify(token, String(process.env.TOKEN))
-} catch(err) {
-    res.status(401)
-    res.json('Access denied, invalid token')
-}
+    const authorizationHeader = req.body.token;
+    const token = authorizationHeader.split(" ")[1];
+    verify(token, String(process.env.TOKEN));
+  } catch (err) {
+    res.status(401);
+    res.json("Access denied, invalid token");
+  }
   const result = await store.index();
   res.json(result);
 };
@@ -28,13 +28,13 @@ const show = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-    const authorizationHeader = req.body.token
-    const token = authorizationHeader.split(' ')[1]
-    verify(token, String(process.env.TOKEN))
-} catch(err) {
-    res.status(401)
-    res.json('Access denied, invalid token')
-}
+    const authorizationHeader = req.body.token;
+    const token = authorizationHeader.split(" ")[1];
+    verify(token, String(process.env.TOKEN));
+  } catch (err) {
+    res.status(401);
+    res.json("Access denied, invalid token");
+  }
   const result = await store.show(req.params.id);
   res.json(result);
   res.send();
@@ -56,7 +56,7 @@ const create = async (
     status,
   });
 
-  const token = sign(password, String(process.env.TOKEN))
+  const token = sign(password, String(process.env.TOKEN));
   res.json(token);
 };
 
@@ -64,6 +64,15 @@ const update = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
+  try {
+    const authorizationHeader = req.body.token;
+    const token = authorizationHeader.split(" ")[1];
+    verify(token, String(process.env.TOKEN));
+  } catch (err) {
+    res.status(401);
+    res.json("Access denied, invalid token");
+  }
+
   const modify: String = req.body.prop;
   const newValue: String = req.body.value;
   const id: String = req.params.id;
@@ -81,21 +90,24 @@ const del = async (
   res.json(result);
 };
 
-const auth =async (req:Express.Request, res:Express.Response):Promise<void> => {
+const auth = async (
+  req: Express.Request,
+  res: Express.Response
+): Promise<void> => {
   const uName: String = req.body.uName;
   const pass: String = req.body.pass;
 
-  const result = await store.authenticate(uName, pass)
-  const x:null = null
-  if (typeof(result) !== typeof(x)) {
-    const token = sign(pass, String(process.env.TOKEN))
-    res.json(token)
+  const result = await store.authenticate(uName, pass);
+  const x: null = null;
+  if (typeof result !== typeof x) {
+    const token = sign(pass, String(process.env.TOKEN));
+    res.json(token);
   }
-}
+};
 
 const userRoutes = (app: Express.Application): void => {
   app.get("/users", index);
-  app.get("/login", auth);
+  app.get("/users/login", auth);
   app.post("/users", create);
   app.get("/users/:id", show);
   app.patch("/users/:id", update);

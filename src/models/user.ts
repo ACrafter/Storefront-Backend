@@ -48,9 +48,9 @@ export class UserStore {
   async create(userInfo: User): Promise<User> {
     const username = userInfo.username;
     const firstname = userInfo.firstname;
-    const status = userInfo.status;
     const password = bcrypt.hashSync(`${userInfo.pass}${pepper}`, salt);
-
+    const status = userInfo.status;
+    
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql =
@@ -97,16 +97,16 @@ export class UserStore {
 
   // Speical Model Operations
   async authenticate(username: String, password: String): Promise<User | null> {
-    const conn = await Client.connect()
-    const sql = 'SELECT pass FROM users WHERE username=($1)'
-    const result = await conn.query(sql, [username])
-    if(result.rows.length) {
-      const user = result.rows[0]
-      if (bcrypt.compareSync(password+pepper, user.pass)) {
-        return user
+    const conn = await Client.connect();
+    const sql = "SELECT pass FROM users WHERE username=($1)";
+    const result = await conn.query(sql, [username]);
+    if (result.rows.length) {
+      const user = result.rows[0];
+      if (bcrypt.compareSync(password + pepper, user.pass)) {
+        return user;
       }
     }
-    return null
+    return null;
   }
 
   async getVIP(): Promise<User[]> {

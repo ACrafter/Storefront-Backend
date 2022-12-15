@@ -15,7 +15,7 @@ describe("Order Model", () => {
     const O = new order_1.OrderStore();
     const U = new user_1.UserStore();
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield U.create({
+        const res = yield U.create({
             username: "ACrafter",
             firstname: "Ahmed",
             pass: "123",
@@ -59,6 +59,15 @@ describe("Order Model", () => {
         it("should return the updated user", () => __awaiter(void 0, void 0, void 0, function* () {
             const res = yield O.update("status", "Completed", "1");
             expect(res).toEqual({ userid: 1, weight: 50, status: "Completed" });
+        }));
+    });
+    describe("Get User's Order  Method", () => {
+        it("should exist", () => {
+            expect(O.getOrdersByUser).toBeDefined();
+        });
+        it("should return the updated user", () => __awaiter(void 0, void 0, void 0, function* () {
+            const res = yield O.getOrdersByUser("1");
+            expect(res).toEqual([{ id: 1, weight: 50, status: "Completed" }]);
         }));
     });
     describe("Delete Method", () => {

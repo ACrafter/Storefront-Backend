@@ -29,12 +29,12 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const authorizationHeader = req.body.token;
-        const token = authorizationHeader.split(' ')[1];
+        const token = authorizationHeader.split(" ")[1];
         (0, jsonwebtoken_1.verify)(token, String(process.env.TOKEN));
     }
     catch (err) {
         res.status(401);
-        res.json('Access denied, invalid token');
+        res.json("Access denied, invalid token");
     }
     const name = req.body.name;
     const quantity = Number(req.body.quantity);

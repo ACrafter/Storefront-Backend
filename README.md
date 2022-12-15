@@ -4,10 +4,16 @@ A Fully Functional Express RESTful API meant to support a ECommerce website. Com
 
 ---
 
-## Installation
+## Installation & Recreating the env
 
 - Installing dependances <br />
     `npm i`
+
+- Creating the DB <br>
+    `CREATE DATABASE market` <br>
+    `CREATE DATABASE markettest`
+
+- The user used is Postgres.
 
 ---
 

@@ -20,12 +20,12 @@ dotenv_1.default.config();
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const authorizationHeader = req.body.token;
-        const token = authorizationHeader.split(' ')[1];
+        const token = authorizationHeader.split(" ")[1];
         (0, jsonwebtoken_1.verify)(token, String(process.env.TOKEN));
     }
     catch (err) {
         res.status(401);
-        res.json('Access denied, invalid token');
+        res.json("Access denied, invalid token");
     }
     const result = yield store.index();
     res.json(result);
@@ -33,12 +33,12 @@ const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const authorizationHeader = req.body.token;
-        const token = authorizationHeader.split(' ')[1];
+        const token = authorizationHeader.split(" ")[1];
         (0, jsonwebtoken_1.verify)(token, String(process.env.TOKEN));
     }
     catch (err) {
         res.status(401);
-        res.json('Access denied, invalid token');
+        res.json("Access denied, invalid token");
     }
     const result = yield store.show(req.params.id);
     res.json(result);
@@ -59,6 +59,15 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.json(token);
 });
 const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const authorizationHeader = req.body.token;
+        const token = authorizationHeader.split(" ")[1];
+        (0, jsonwebtoken_1.verify)(token, String(process.env.TOKEN));
+    }
+    catch (err) {
+        res.status(401);
+        res.json("Access denied, invalid token");
+    }
     const modify = req.body.prop;
     const newValue = req.body.value;
     const id = req.params.id;
@@ -75,14 +84,14 @@ const auth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const pass = req.body.pass;
     const result = yield store.authenticate(uName, pass);
     const x = null;
-    if (typeof (result) !== typeof (x)) {
+    if (typeof result !== typeof x) {
         const token = (0, jsonwebtoken_1.sign)(pass, String(process.env.TOKEN));
         res.json(token);
     }
 });
 const userRoutes = (app) => {
     app.get("/users", index);
-    app.get("/login", auth);
+    app.get("/users/login", auth);
     app.post("/users", create);
     app.get("/users/:id", show);
     app.patch("/users/:id", update);

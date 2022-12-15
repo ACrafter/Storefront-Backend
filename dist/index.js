@@ -11,7 +11,7 @@ const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded());
 app.get("/", (req, res) => {
-    res.send("Hello World!");
+    res.send("<h1>API Main Endpoints</h1><ul><li>Users</li><li>Orders</li><li>Products</li></ul>");
 });
 (0, user_1.default)(app);
 (0, product_1.default)(app);

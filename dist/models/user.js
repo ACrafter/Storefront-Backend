@@ -56,8 +56,8 @@ class UserStore {
         return __awaiter(this, void 0, void 0, function* () {
             const username = userInfo.username;
             const firstname = userInfo.firstname;
-            const status = userInfo.status;
             const password = bcrypt_1.default.hashSync(`${userInfo.pass}${pepper}`, salt);
+            const status = userInfo.status;
             try {
                 const connection = yield database_1.default.connect(); // Opening the connection
                 const sql = "INSERT INTO users (username, firstname, pass, status) VALUES ($1, $2 , $3, $4) RETURNING id, username, firstname ,status"; // Defining the SQL query
@@ -109,7 +109,7 @@ class UserStore {
     authenticate(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
             const conn = yield database_1.default.connect();
-            const sql = 'SELECT pass FROM users WHERE username=($1)';
+            const sql = "SELECT pass FROM users WHERE username=($1)";
             const result = yield conn.query(sql, [username]);
             if (result.rows.length) {
                 const user = result.rows[0];

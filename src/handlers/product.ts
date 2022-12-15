@@ -28,15 +28,14 @@ const create = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-
   try {
-    const authorizationHeader = req.body.token
-    const token = authorizationHeader.split(' ')[1]
-    verify(token, String(process.env.TOKEN))
-} catch(err) {
-    res.status(401)
-    res.json('Access denied, invalid token')
-}
+    const authorizationHeader = req.body.token;
+    const token = authorizationHeader.split(" ")[1];
+    verify(token, String(process.env.TOKEN));
+  } catch (err) {
+    res.status(401);
+    res.json("Access denied, invalid token");
+  }
 
   const name: String = req.body.name;
   const quantity: Number = Number(req.body.quantity);
@@ -75,4 +74,4 @@ const productsRoutes = (app: Express.Application): void => {
   app.delete("/products/:id", del);
 };
 
-export default productsRoutes; 
+export default productsRoutes;
