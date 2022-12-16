@@ -40,23 +40,35 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(401);
         res.json("Access denied, invalid token");
     }
-    const result = yield store.show(req.params.id);
-    res.json(result);
-    res.send();
+    try {
+        const result = yield store.show(req.params.id);
+        res.json(result);
+        res.send();
+    }
+    catch (err) {
+        res.send(`Error: ${err}`);
+        throw new Error(`Error Couldn't Create User: ${err}`);
+    }
 });
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uName = req.body.uName;
-    const fName = req.body.fName;
-    const status = req.body.status;
-    const password = req.body.password;
-    yield store.create({
-        username: uName,
-        firstname: fName,
-        pass: password,
-        status,
-    });
-    const token = (0, jsonwebtoken_1.sign)(password, String(process.env.TOKEN));
-    res.json(token);
+    try {
+        const uName = req.body.uName;
+        const fName = req.body.fName;
+        const status = req.body.status;
+        const password = req.body.password;
+        yield store.create({
+            username: uName,
+            firstname: fName,
+            pass: password,
+            status,
+        });
+        const token = (0, jsonwebtoken_1.sign)(password, String(process.env.TOKEN));
+        res.json(token);
+    }
+    catch (err) {
+        res.send(`Error: ${err}`);
+        throw new Error(`Error Couldn't Create User: ${err}`);
+    }
 });
 const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -68,25 +80,43 @@ const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.status(401);
         res.json("Access denied, invalid token");
     }
-    const modify = req.body.prop;
-    const newValue = req.body.value;
-    const id = req.params.id;
-    const result = yield store.update(id, modify, newValue);
-    res.json(result);
+    try {
+        const modify = req.body.prop;
+        const newValue = req.body.value;
+        const id = req.params.id;
+        const result = yield store.update(id, modify, newValue);
+        res.json(result);
+    }
+    catch (err) {
+        res.send(`Error: ${err}`);
+        throw new Error(`Error Couldn't Update User: ${err}`);
+    }
 });
 const del = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    const result = yield store.delete(id);
-    res.json(result);
+    try {
+        const id = req.params.id;
+        const result = yield store.delete(id);
+        res.json(result);
+    }
+    catch (err) {
+        res.send(`Error: ${err}`);
+        throw new Error(`Error Couldn't Delete User: ${err}`);
+    }
 });
 const auth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const uName = req.body.uName;
-    const pass = req.body.pass;
-    const result = yield store.authenticate(uName, pass);
-    const x = null;
-    if (typeof result !== typeof x) {
-        const token = (0, jsonwebtoken_1.sign)(pass, String(process.env.TOKEN));
-        res.json(token);
+    try {
+        const uName = req.body.uName;
+        const pass = req.body.pass;
+        const result = yield store.authenticate(uName, pass);
+        const x = null;
+        if (typeof result !== typeof x) {
+            const token = (0, jsonwebtoken_1.sign)(pass, String(process.env.TOKEN));
+            res.json(token);
+        }
+    }
+    catch (err) {
+        res.send(`Error: ${err}`);
+        throw new Error(`Error Couldn't Login User: ${err}`);
     }
 });
 const userRoutes = (app) => {

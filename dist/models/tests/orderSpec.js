@@ -15,7 +15,7 @@ describe("Order Model", () => {
     const O = new order_1.OrderStore();
     const U = new user_1.UserStore();
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        const res = yield U.create({
+        yield U.create({
             username: "ACrafter",
             firstname: "Ahmed",
             pass: "123",
