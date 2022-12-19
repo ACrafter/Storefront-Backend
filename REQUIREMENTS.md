@@ -29,3 +29,32 @@
 - **GET** to */products/:id* returns that product.  
 - **PATCH** to */products/:id* update that product you pass the modified propery as *prop* the new value as *value* and the id as *id*.
 - **DELETE** to */products/:id* deletes that order.
+
+# DB Schema
+
+## Users
+
+- **id**, INT, SERIAL.
+- **username**, VARCHAR(100).
+- **pass**, VARCHAR(100).
+- **status**, ENUM(VIP, Frequent, None).
+- **firstname**, VARCHAR(100).
+- **lastname**, VARCHAR(100).
+- **loc**, VARCHAR(100).
+
+## Orders 
+
+- **id**, INT, SERIAL.
+- **userId**, INT, REFERENCES users(id).
+- **weight**, INT.
+- **status**, VARCHAR(50).
+- **ETA** VARCHAR(50).
+
+## Products
+
+- **id**, INT,  SERIAL.
+- **name**, VARCHAR(100).
+- **type**, VARCHAR(100).
+- **quantity**, INT.
+- **description**, TEXT.
+- **productPic**, BYTEA.
