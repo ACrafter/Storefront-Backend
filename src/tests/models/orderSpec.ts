@@ -1,12 +1,12 @@
-import { OrderStore } from "../order";
-import { UserStore } from "../user";
+import { OrderStore } from "../../models/order";
+import { UserStore } from "../../models/user";
 
 describe("Order Model", () => {
   const O = new OrderStore();
   const U = new UserStore();
 
   beforeAll(async () => {
-  await U.create({
+    await U.create({
       username: "ACrafter",
       firstname: "Ahmed",
       pass: "123",
@@ -15,7 +15,7 @@ describe("Order Model", () => {
   });
 
   afterAll(async () => {
-    await U.delete("1");
+    await U.delete("2");
   });
 
   describe("Index Method", () => {
@@ -35,8 +35,8 @@ describe("Order Model", () => {
     });
 
     it("should return a newly created user", async () => {
-      const res = await O.create({ userid: "1", weight: 50, status: "Active" });
-      expect(res).toEqual({ id: 1, userid: 1, weight: 50, status: "Active" });
+      const res = await O.create({ userid: "2", weight: 50, status: "Active" });
+      expect(res).toEqual({ id: 2, userid: 2, weight: 50, status: "Active" });
     });
   });
 
@@ -45,9 +45,9 @@ describe("Order Model", () => {
       expect(O.show).toBeDefined();
     });
 
-    it("should return a newly created user", async () => {
-      const res = await O.show("1");
-      expect(res).toEqual({ userid: 1, weight: 50, status: "Active" });
+    it("should return a newly created order", async () => {
+      const res = await O.show("2");
+      expect(res).toEqual({ userid: 2, weight: 50, status: "Active" });
     });
   });
 
@@ -57,8 +57,8 @@ describe("Order Model", () => {
     });
 
     it("should return the updated user", async () => {
-      const res = await O.update("status", "Completed", "1");
-      expect(res).toEqual({ userid: 1, weight: 50, status: "Completed" });
+      const res = await O.update("status", "Completed", "2");
+      expect(res).toEqual({ userid: 2, weight: 50, status: "Completed" });
     });
   });
 
@@ -68,8 +68,8 @@ describe("Order Model", () => {
     });
 
     it("should return the updated user", async () => {
-      const res = await O.getOrdersByUser("1");
-      expect(res).toEqual([{ id:1, weight: 50, status: "Completed" }]);
+      const res = await O.getOrdersByUser("2");
+      expect(res).toEqual([{ id: 2, weight: 50, status: "Completed" }]);
     });
   });
 
@@ -79,7 +79,7 @@ describe("Order Model", () => {
     });
 
     it("should return a list of all remaining orders", async () => {
-      const res = await O.delete("1");
+      const res = await O.delete("2");
       expect(res).toEqual([]);
     });
   });

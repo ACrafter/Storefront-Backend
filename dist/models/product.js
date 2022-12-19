@@ -39,7 +39,6 @@ class ProductStore {
                 const sql = "SELECT name, type, quantity FROM products WHERE id=$1"; // Defining the SQL query
                 const result = yield connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
                 connection.release(); // Closing the connection
-                console.log(result.rows[0]);
                 return result.rows[0]; // Returning the result
             }
             catch (err) {
@@ -73,7 +72,6 @@ class ProductStore {
                     "=$1 WHERE id=$2 RETURNING name , type , quantity"; // Defining the SQL query
                 const result = yield connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
                 connection.release(); // Closing the connection
-                console.log(result.rows[0]);
                 return result.rows[0]; // Returning the result
             }
             catch (err) {

@@ -12,38 +12,55 @@ const index = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
+  let auth: Boolean;
   try {
-    const authorizationHeader = req.body.token;
-    const token = authorizationHeader.split(" ")[1];
+    const token = req.body.token;
     verify(token, String(process.env.TOKEN));
+    auth = true;
   } catch (err) {
+    auth = false;
     res.status(401);
     res.json("Access denied, invalid token");
   }
-  const result = await store.index();
-  res.json(result);
+
+  if (auth === true) {
+    try {
+      const result = await store.index();
+      res.json(result);
+    } catch (err) {
+      res.status(203);
+      res.send(`Error: ${err}`);
+      throw new Error(`Error Couldn't Get Users: ${err}`);
+    }
+  }
 };
 
 const show = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
+  let auth: Boolean;
   try {
-    const authorizationHeader = req.body.token;
-    const token = authorizationHeader.split(" ")[1];
+    const token = req.body.token;
     verify(token, String(process.env.TOKEN));
+    auth = true;
   } catch (err) {
+    auth = false;
     res.status(401);
     res.json("Access denied, invalid token");
   }
-  try {
-  const result = await store.show(req.params.id);
-  res.json(result);
-  res.send();
-} catch(err) {
-  res.send(`Error: ${err}`)
-  throw new Error(`Error Couldn't Create User: ${err}`)
-}
+
+  if (auth === true) {
+    try {
+      const result = await store.show(req.params.id);
+      res.json(result);
+      res.send();
+    } catch (err) {
+      res.status(203);
+      res.send(`Error: ${err}`);
+      throw new Error(`Error Couldn't Get User: ${err}`);
+    }
+  }
 };
 
 const create = async (
@@ -51,63 +68,81 @@ const create = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-  const uName: String = req.body.uName;
-  const fName: String = req.body.fName;
-  const status: String = req.body.status;
-  const password: String = req.body.password;
+    const uName: String = req.body.uName;
+    const fName: String = req.body.fName;
+    const status: String = req.body.status;
+    const password: String = req.body.password;
 
-  await store.create({
-    username: uName,
-    firstname: fName,
-    pass: password,
-    status,
-  });
+    await store.create({
+      username: uName,
+      firstname: fName,
+      pass: password,
+      status,
+    });
 
-  const token = sign(password, String(process.env.TOKEN));
-  res.json(token);
-} catch(err) {
-  res.send(`Error: ${err}`)
-  throw new Error(`Error Couldn't Create User: ${err}`)
-}
+    const token = sign(password, String(process.env.TOKEN));
+    res.json(token);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Create User: ${err}`);
+  }
 };
 
 const update = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
+  let auth: Boolean;
   try {
-    const authorizationHeader = req.body.token;
-    const token = authorizationHeader.split(" ")[1];
+    const token = req.body.token;
     verify(token, String(process.env.TOKEN));
+    auth = true;
   } catch (err) {
+    auth = false;
     res.status(401);
     res.json("Access denied, invalid token");
   }
-  try {
-  const modify: String = req.body.prop;
-  const newValue: String = req.body.value;
-  const id: String = req.params.id;
 
-  const result = await store.update(id, modify, newValue);
-  res.json(result);
-} catch(err) {
-  res.send(`Error: ${err}`)
-  throw new Error(`Error Couldn't Update User: ${err}`)
-}
+  if (auth === true) {
+    try {
+      const modify: String = req.body.prop;
+      const newValue: String = req.body.value;
+      const id: String = req.params.id;
+
+      const result = await store.update(id, modify, newValue);
+      res.json(result);
+    } catch (err) {
+      res.send(`Error: ${err}`);
+      throw new Error(`Error Couldn't Update User: ${err}`);
+    }
+  }
 };
 
 const del = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
+  let auth: Boolean;
   try {
-  const id: String = req.params.id;
-  const result = await store.delete(id);
-  res.json(result);
-} catch(err) {
-  res.send(`Error: ${err}`)
-  throw new Error(`Error Couldn't Delete User: ${err}`)
-}
+    const token = req.body.token;
+    verify(token, String(process.env.TOKEN));
+    auth = true;
+  } catch (err) {
+    auth = false;
+    res.status(401);
+    res.json("Access denied, invalid token");
+  }
+
+  if (auth === true) {
+    try {
+      const id: String = req.params.id;
+      const result = await store.delete(id);
+      res.json(result);
+    } catch (err) {
+      res.send(`Error: ${err}`);
+      throw new Error(`Error Couldn't Delete User: ${err}`);
+    }
+  }
 };
 
 const auth = async (
@@ -115,19 +150,19 @@ const auth = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-  const uName: String = req.body.uName;
-  const pass: String = req.body.pass;
+    const uName: String = req.body.uName;
+    const pass: String = req.body.pass;
 
-  const result = await store.authenticate(uName, pass);
-  const x: null = null;
-  if (typeof result !== typeof x) {
-    const token = sign(pass, String(process.env.TOKEN));
-    res.json(token);
+    const result = await store.authenticate(uName, pass);
+    const x: null = null;
+    if (typeof result !== typeof x) {
+      const token = sign(pass, String(process.env.TOKEN));
+      res.json(token);
+    }
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Login User: ${err}`);
   }
-} catch(err) {
-  res.send(`Error: ${err}`)
-  throw new Error(`Error Couldn't Login User: ${err}`)
-}
 };
 
 const userRoutes = (app: Express.Application): void => {

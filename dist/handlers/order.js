@@ -27,8 +27,8 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userid = req.body.name;
-        const weight = Number(req.body.quantity);
+        const userid = req.body.userid;
+        const weight = Number(req.body.weight);
         const status = req.body.status;
         const result = yield store.create({ userid, weight, status });
         res.json(result);

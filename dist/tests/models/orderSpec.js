@@ -9,8 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const order_1 = require("../order");
-const user_1 = require("../user");
+const order_1 = require("../../models/order");
+const user_1 = require("../../models/user");
 describe("Order Model", () => {
     const O = new order_1.OrderStore();
     const U = new user_1.UserStore();
@@ -23,7 +23,7 @@ describe("Order Model", () => {
         });
     }));
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield U.delete("1");
+        yield U.delete("2");
     }));
     describe("Index Method", () => {
         it("should exist", () => {
@@ -39,17 +39,17 @@ describe("Order Model", () => {
             expect(O.create).toBeDefined();
         });
         it("should return a newly created user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield O.create({ userid: "1", weight: 50, status: "Active" });
-            expect(res).toEqual({ id: 1, userid: 1, weight: 50, status: "Active" });
+            const res = yield O.create({ userid: "2", weight: 50, status: "Active" });
+            expect(res).toEqual({ id: 2, userid: 2, weight: 50, status: "Active" });
         }));
     });
     describe("Show Method", () => {
         it("should exist", () => {
             expect(O.show).toBeDefined();
         });
-        it("should return a newly created user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield O.show("1");
-            expect(res).toEqual({ userid: 1, weight: 50, status: "Active" });
+        it("should return a newly created order", () => __awaiter(void 0, void 0, void 0, function* () {
+            const res = yield O.show("2");
+            expect(res).toEqual({ userid: 2, weight: 50, status: "Active" });
         }));
     });
     describe("Update Method", () => {
@@ -57,8 +57,8 @@ describe("Order Model", () => {
             expect(O.update).toBeDefined();
         });
         it("should return the updated user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield O.update("status", "Completed", "1");
-            expect(res).toEqual({ userid: 1, weight: 50, status: "Completed" });
+            const res = yield O.update("status", "Completed", "2");
+            expect(res).toEqual({ userid: 2, weight: 50, status: "Completed" });
         }));
     });
     describe("Get User's Order  Method", () => {
@@ -66,8 +66,8 @@ describe("Order Model", () => {
             expect(O.getOrdersByUser).toBeDefined();
         });
         it("should return the updated user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield O.getOrdersByUser("1");
-            expect(res).toEqual([{ id: 1, weight: 50, status: "Completed" }]);
+            const res = yield O.getOrdersByUser("2");
+            expect(res).toEqual([{ id: 2, weight: 50, status: "Completed" }]);
         }));
     });
     describe("Delete Method", () => {
@@ -75,7 +75,7 @@ describe("Order Model", () => {
             expect(O.delete).toBeDefined();
         });
         it("should return a list of all remaining orders", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield O.delete("1");
+            const res = yield O.delete("2");
             expect(res).toEqual([]);
         }));
     });

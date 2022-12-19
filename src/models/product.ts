@@ -31,7 +31,6 @@ export class ProductStore {
       const sql = "SELECT name, type, quantity FROM products WHERE id=$1"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
-      console.log(result.rows[0]);
       return result.rows[0]; // Returning the result
     } catch (err) {
       throw new Error(`Couldn't retrive Product whose's id=${id}: ${err}`);
@@ -68,7 +67,6 @@ export class ProductStore {
         "=$1 WHERE id=$2 RETURNING name , type , quantity"; // Defining the SQL query
       const result = await connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
-      console.log(result.rows[0]);
       return result.rows[0]; // Returning the result
     } catch (err) {
       throw new Error(`Couldn't update Product who's id=${id}: ${err}`);

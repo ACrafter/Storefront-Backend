@@ -29,7 +29,6 @@ export class OrderStore {
       const sql = "SELECT id, userid, weight FROM orders WHERE id=$1"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
-      console.log(result.rows[0]);
       return result.rows[0]; // Returning the result
     } catch (err) {
       throw new Error(`Couldn't retrive Order whose's id=${id}: ${err}`);
@@ -78,7 +77,6 @@ export class OrderStore {
         "=$1 WHERE id=$2 RETURNING userid, weight, status"; // Defining the SQL query
       const result = await connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
-      console.log(result.rows[0]);
       return result.rows[0]; // Returning the result
     } catch (err) {
       throw new Error(`Couldn't update Order who's id=${id}: ${err}`);
@@ -98,7 +96,7 @@ export class OrderStore {
   }
 
   // Methods specific to the model
-  async getOrdersByUser(id: String):Promise<Order[]> {
+  async getOrdersByUser(id: String): Promise<Order[]> {
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql = "SELECT id, weight, status FROM orders WHERE userid=($1)"; // Defining the SQL query

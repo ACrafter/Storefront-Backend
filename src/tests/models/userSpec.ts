@@ -1,7 +1,12 @@
-import { UserStore } from "../user";
+import { UserStore } from "../../models/user";
 
 describe("User Model", () => {
   const U = new UserStore();
+
+  beforeAll(async () => {
+    await U.delete("3");
+  });
+
   describe("Index Method", () => {
     it("should exist", () => {
       expect(U.index).toBeDefined();
@@ -26,7 +31,7 @@ describe("User Model", () => {
         status: "VIP",
       });
       expect(res).toEqual({
-        id: 2,
+        id: 4,
         username: "ACrafter",
         firstname: "Ahmed",
         status: "VIP",
@@ -40,7 +45,7 @@ describe("User Model", () => {
     });
 
     it("should return a single user", async () => {
-      const res = await U.show("2");
+      const res = await U.show("4");
       expect(res).toEqual({
         username: "ACrafter",
         firstname: "Ahmed",
@@ -55,7 +60,7 @@ describe("User Model", () => {
     });
 
     it("should return a single user", async () => {
-      const res = await U.update("2", "username", "Yasser");
+      const res = await U.update("4", "username", "Yasser");
       expect(res).toEqual({
         username: "Yasser",
         firstname: "Ahmed",
@@ -105,7 +110,7 @@ describe("User Model", () => {
     });
 
     it("should return a single user", async () => {
-      const res = await U.delete("2");
+      const res = await U.delete("4");
       expect(res).toEqual([]);
     });
   });

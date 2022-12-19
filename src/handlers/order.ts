@@ -18,12 +18,12 @@ const show = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-  const result = await store.show(req.params.id);
-  res.json(result);
-} catch(err) {
-  res.send(`Error: ${err}`)
-  throw new Error(`Error Couldn't Show Order: ${err}`)
-}
+    const result = await store.show(req.params.id);
+    res.json(result);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Show Order: ${err}`);
+  }
 };
 
 const create = async (
@@ -31,33 +31,33 @@ const create = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-  const userid: String = req.body.name;
-  const weight: Number = Number(req.body.quantity);
-  const status: String = req.body.status;
+    const userid: String = req.body.userid;
+    const weight: Number = Number(req.body.weight);
+    const status: String = req.body.status;
 
-  const result = await store.create({ userid, weight, status });
-  res.json(result);
-} catch(err) {
-  res.send(`Error: ${err}`)
-  throw new Error(`Error Couldn't Create Order: ${err}`)
-}
+    const result = await store.create({ userid, weight, status });
+    res.json(result);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Create Order: ${err}`);
+  }
 };
 
 const update = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-  try{
-  const modify: String = req.body.prop;
-  const newValue: String = req.body.value;
-  const id: String = req.params.id;
+  try {
+    const modify: String = req.body.prop;
+    const newValue: String = req.body.value;
+    const id: String = req.params.id;
 
-  const result = await store.update(modify, newValue, id);
-  res.json(result);
-} catch(err) {
-  res.send(`Error: ${err}`)
-  throw new Error(`Error Couldn't Update Order: ${err}`)
-}
+    const result = await store.update(modify, newValue, id);
+    res.json(result);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Update Order: ${err}`);
+  }
 };
 
 const del = async (
@@ -65,13 +65,13 @@ const del = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-  const id: String = req.params.id;
-  const result = await store.delete(id);
-  res.json(result);
-} catch(err) {
-  res.send(`Error: ${err}`)
-  throw new Error(`Error Couldn't Delete Order: ${err}`)
-}
+    const id: String = req.params.id;
+    const result = await store.delete(id);
+    res.json(result);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Delete Order: ${err}`);
+  }
 };
 
 const userOrders = async (
@@ -79,13 +79,13 @@ const userOrders = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-  const id: String = req.params.id;
-  const result = await store.getOrdersByUser(id);
-  res.json(result);
-} catch(err) {
-  res.send(`Error: ${err}`)
-  throw new Error(`Error Couldn't Get Orders: ${err}`)
-}
+    const id: String = req.params.id;
+    const result = await store.getOrdersByUser(id);
+    res.json(result);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Get Orders: ${err}`);
+  }
 };
 
 const ordersRoutes = (app: Express.Application): void => {

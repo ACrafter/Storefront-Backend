@@ -9,9 +9,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_1 = require("../user");
+const user_1 = require("../../models/user");
 describe("User Model", () => {
     const U = new user_1.UserStore();
+    beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
+        yield U.delete("3");
+    }));
     describe("Index Method", () => {
         it("should exist", () => {
             expect(U.index).toBeDefined();
@@ -33,7 +36,7 @@ describe("User Model", () => {
                 status: "VIP",
             });
             expect(res).toEqual({
-                id: 2,
+                id: 4,
                 username: "ACrafter",
                 firstname: "Ahmed",
                 status: "VIP",
@@ -45,7 +48,7 @@ describe("User Model", () => {
             expect(U.show).toBeDefined();
         });
         it("should return a single user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield U.show("2");
+            const res = yield U.show("4");
             expect(res).toEqual({
                 username: "ACrafter",
                 firstname: "Ahmed",
@@ -58,7 +61,7 @@ describe("User Model", () => {
             expect(U.update).toBeDefined();
         });
         it("should return a single user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield U.update("2", "username", "Yasser");
+            const res = yield U.update("4", "username", "Yasser");
             expect(res).toEqual({
                 username: "Yasser",
                 firstname: "Ahmed",
@@ -100,7 +103,7 @@ describe("User Model", () => {
             expect(U.delete).toBeDefined();
         });
         it("should return a single user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield U.delete("2");
+            const res = yield U.delete("4");
             expect(res).toEqual([]);
         }));
     });

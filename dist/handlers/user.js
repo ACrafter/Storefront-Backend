@@ -18,36 +18,52 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const store = new user_1.UserStore();
 dotenv_1.default.config();
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let auth;
     try {
-        const authorizationHeader = req.body.token;
-        const token = authorizationHeader.split(" ")[1];
+        const token = req.body.token;
         (0, jsonwebtoken_1.verify)(token, String(process.env.TOKEN));
+        auth = true;
     }
     catch (err) {
+        auth = false;
         res.status(401);
         res.json("Access denied, invalid token");
     }
-    const result = yield store.index();
-    res.json(result);
+    if (auth === true) {
+        try {
+            const result = yield store.index();
+            res.json(result);
+        }
+        catch (err) {
+            res.status(203);
+            res.send(`Error: ${err}`);
+            throw new Error(`Error Couldn't Get Users: ${err}`);
+        }
+    }
 });
 const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let auth;
     try {
-        const authorizationHeader = req.body.token;
-        const token = authorizationHeader.split(" ")[1];
+        const token = req.body.token;
         (0, jsonwebtoken_1.verify)(token, String(process.env.TOKEN));
+        auth = true;
     }
     catch (err) {
+        auth = false;
         res.status(401);
         res.json("Access denied, invalid token");
     }
-    try {
-        const result = yield store.show(req.params.id);
-        res.json(result);
-        res.send();
-    }
-    catch (err) {
-        res.send(`Error: ${err}`);
-        throw new Error(`Error Couldn't Create User: ${err}`);
+    if (auth === true) {
+        try {
+            const result = yield store.show(req.params.id);
+            res.json(result);
+            res.send();
+        }
+        catch (err) {
+            res.status(203);
+            res.send(`Error: ${err}`);
+            throw new Error(`Error Couldn't Get User: ${err}`);
+        }
     }
 });
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -71,36 +87,53 @@ const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const update = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let auth;
     try {
-        const authorizationHeader = req.body.token;
-        const token = authorizationHeader.split(" ")[1];
+        const token = req.body.token;
         (0, jsonwebtoken_1.verify)(token, String(process.env.TOKEN));
+        auth = true;
     }
     catch (err) {
+        auth = false;
         res.status(401);
         res.json("Access denied, invalid token");
     }
-    try {
-        const modify = req.body.prop;
-        const newValue = req.body.value;
-        const id = req.params.id;
-        const result = yield store.update(id, modify, newValue);
-        res.json(result);
-    }
-    catch (err) {
-        res.send(`Error: ${err}`);
-        throw new Error(`Error Couldn't Update User: ${err}`);
+    if (auth === true) {
+        try {
+            const modify = req.body.prop;
+            const newValue = req.body.value;
+            const id = req.params.id;
+            const result = yield store.update(id, modify, newValue);
+            res.json(result);
+        }
+        catch (err) {
+            res.send(`Error: ${err}`);
+            throw new Error(`Error Couldn't Update User: ${err}`);
+        }
     }
 });
 const del = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    let auth;
     try {
-        const id = req.params.id;
-        const result = yield store.delete(id);
-        res.json(result);
+        const token = req.body.token;
+        (0, jsonwebtoken_1.verify)(token, String(process.env.TOKEN));
+        auth = true;
     }
     catch (err) {
-        res.send(`Error: ${err}`);
-        throw new Error(`Error Couldn't Delete User: ${err}`);
+        auth = false;
+        res.status(401);
+        res.json("Access denied, invalid token");
+    }
+    if (auth === true) {
+        try {
+            const id = req.params.id;
+            const result = yield store.delete(id);
+            res.json(result);
+        }
+        catch (err) {
+            res.send(`Error: ${err}`);
+            throw new Error(`Error Couldn't Delete User: ${err}`);
+        }
     }
 });
 const auth = (req, res) => __awaiter(void 0, void 0, void 0, function* () {

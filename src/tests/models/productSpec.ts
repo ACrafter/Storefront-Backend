@@ -1,4 +1,4 @@
-import { ProductStore } from "../product";
+import { ProductStore } from "../../models/product";
 
 describe("Product Model", () => {
   const P = new ProductStore();

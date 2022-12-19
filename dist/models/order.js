@@ -38,7 +38,6 @@ class OrderStore {
                 const sql = "SELECT id, userid, weight FROM orders WHERE id=$1"; // Defining the SQL query
                 const result = yield connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
                 connection.release(); // Closing the connection
-                console.log(result.rows[0]);
                 return result.rows[0]; // Returning the result
             }
             catch (err) {
@@ -86,7 +85,6 @@ class OrderStore {
                     "=$1 WHERE id=$2 RETURNING userid, weight, status"; // Defining the SQL query
                 const result = yield connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
                 connection.release(); // Closing the connection
-                console.log(result.rows[0]);
                 return result.rows[0]; // Returning the result
             }
             catch (err) {
