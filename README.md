@@ -54,4 +54,11 @@ The API supports three main tables Users, Orders, Products. Where a 1:N relation
 
 ---
 
+## Project Ports
+
+- Server Port: 3000
+- PSQL Port: 5432
+
+---
+
 *This project was made as a part of EgyFwd Advanced Web Track Training*
