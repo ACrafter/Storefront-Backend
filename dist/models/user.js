@@ -108,16 +108,22 @@ class UserStore {
     // Speical Model Operations
     authenticate(username, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const conn = yield database_1.default.connect();
-            const sql = "SELECT pass FROM users WHERE username=($1)";
-            const result = yield conn.query(sql, [username]);
-            if (result.rows.length) {
-                const user = result.rows[0];
-                if (bcrypt_1.default.compareSync(password + pepper, user.pass)) {
-                    return user;
+            try {
+                const conn = yield database_1.default.connect();
+                const sql = "SELECT pass FROM users WHERE username=($1)";
+                const result = yield conn.query(sql, [username]);
+                if (result.rows.length) {
+                    const user = result.rows[0];
+                    if (bcrypt_1.default.compareSync(password + pepper, user.pass)) {
+                        return user;
+                    }
                 }
+                return null;
             }
-            return null;
+            catch (err) {
+                console.log(err);
+                return null;
+            }
         });
     }
     getVIP() {

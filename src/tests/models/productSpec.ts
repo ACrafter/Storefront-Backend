@@ -26,7 +26,7 @@ describe("Product Model", () => {
         quantity: 100,
       });
       expect(res).toEqual({
-        id: 1,
+        id: 2,
         name: "Spoon",
         type: "Ketchen",
         quantity: 100,
@@ -40,7 +40,7 @@ describe("Product Model", () => {
     });
 
     it("should return a product with a given id", async () => {
-      const res = await P.show("1");
+      const res = await P.show("2");
       expect(res).toEqual({ name: "Spoon", type: "Ketchen", quantity: 100 });
     });
   });

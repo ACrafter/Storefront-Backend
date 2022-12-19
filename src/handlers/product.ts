@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import Express from "express";
 import { ProductStore } from "../models/product";
-import { verify } from "jsonwebtoken";
 import dotenv from "dotenv";
+import Auth from "../middlewares/Auth";
 
 dotenv.config();
 const store = new ProductStore();
@@ -38,18 +38,6 @@ const create = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-  let auth: Boolean;
-  try {
-    const authorizationHeader = req.body.token;
-    const token = authorizationHeader.split(" ")[1];
-    verify(token, String(process.env.TOKEN));
-    auth = true;
-  } catch (err) {
-    auth = false;
-    res.status(401);
-    res.json("Access denied, invalid token");
-  }
-  if (auth === true) {
     try {
       const name: String = req.body.name;
       const quantity: Number = Number(req.body.quantity);
@@ -61,7 +49,6 @@ const create = async (
       res.send(`Error: ${err}`);
       throw new Error(`Error Couldn't Create Product: ${err}`);
     }
-  }
 };
 
 const update = async (
@@ -97,10 +84,10 @@ const del = async (
 
 const productsRoutes = (app: Express.Application): void => {
   app.get("/products", index);
-  app.post("/products", create);
+  app.post("/products", Auth, create);
   app.get("/products/:id", show);
-  app.patch("/products/:id", update);
-  app.delete("/products/:id", del);
+  app.patch("/products/:id", Auth, update);
+  app.delete("/products/:id", Auth, del);
 };
 
 export default productsRoutes;

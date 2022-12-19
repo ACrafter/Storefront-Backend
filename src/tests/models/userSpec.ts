@@ -5,6 +5,7 @@ describe("User Model", () => {
 
   beforeAll(async () => {
     await U.delete("3");
+    await U.delete("4");
   });
 
   describe("Index Method", () => {
@@ -31,7 +32,7 @@ describe("User Model", () => {
         status: "VIP",
       });
       expect(res).toEqual({
-        id: 4,
+        id: 5,
         username: "ACrafter",
         firstname: "Ahmed",
         status: "VIP",
@@ -45,7 +46,7 @@ describe("User Model", () => {
     });
 
     it("should return a single user", async () => {
-      const res = await U.show("4");
+      const res = await U.show("5");
       expect(res).toEqual({
         username: "ACrafter",
         firstname: "Ahmed",
@@ -60,7 +61,7 @@ describe("User Model", () => {
     });
 
     it("should return a single user", async () => {
-      const res = await U.update("4", "username", "Yasser");
+      const res = await U.update("5", "username", "Yasser");
       expect(res).toEqual({
         username: "Yasser",
         firstname: "Ahmed",
@@ -110,7 +111,7 @@ describe("User Model", () => {
     });
 
     it("should return a single user", async () => {
-      const res = await U.delete("4");
+      const res = await U.delete("5");
       expect(res).toEqual([]);
     });
   });

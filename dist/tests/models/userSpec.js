@@ -14,6 +14,7 @@ describe("User Model", () => {
     const U = new user_1.UserStore();
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
         yield U.delete("3");
+        yield U.delete("4");
     }));
     describe("Index Method", () => {
         it("should exist", () => {
@@ -36,7 +37,7 @@ describe("User Model", () => {
                 status: "VIP",
             });
             expect(res).toEqual({
-                id: 4,
+                id: 5,
                 username: "ACrafter",
                 firstname: "Ahmed",
                 status: "VIP",
@@ -48,7 +49,7 @@ describe("User Model", () => {
             expect(U.show).toBeDefined();
         });
         it("should return a single user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield U.show("4");
+            const res = yield U.show("5");
             expect(res).toEqual({
                 username: "ACrafter",
                 firstname: "Ahmed",
@@ -61,7 +62,7 @@ describe("User Model", () => {
             expect(U.update).toBeDefined();
         });
         it("should return a single user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield U.update("4", "username", "Yasser");
+            const res = yield U.update("5", "username", "Yasser");
             expect(res).toEqual({
                 username: "Yasser",
                 firstname: "Ahmed",
@@ -103,7 +104,7 @@ describe("User Model", () => {
             expect(U.delete).toBeDefined();
         });
         it("should return a single user", () => __awaiter(void 0, void 0, void 0, function* () {
-            const res = yield U.delete("4");
+            const res = yield U.delete("5");
             expect(res).toEqual([]);
         }));
     });

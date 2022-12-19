@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import Express from "express";
+import Auth from "../middlewares/Auth";
 import { OrderStore } from "../models/order";
 
 const store = new OrderStore();
@@ -89,12 +90,12 @@ const userOrders = async (
 };
 
 const ordersRoutes = (app: Express.Application): void => {
-  app.get("/orders", index);
-  app.post("/orders", create);
-  app.get("/orders/:id", show);
-  app.patch("/orders/:id", update);
-  app.delete("/orders/:id", del);
-  app.delete("/orders/user/:id", userOrders);
+  app.get("/orders", Auth, index);
+  app.post("/orders", Auth, create);
+  app.get("/orders/:id", Auth, show);
+  app.patch("/orders/:id", Auth, update);
+  app.delete("/orders/:id", Auth, del);
+  app.delete("/orders/user/:id", Auth, userOrders);
 };
 
 export default ordersRoutes;

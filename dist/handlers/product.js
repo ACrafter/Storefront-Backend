@@ -13,13 +13,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const product_1 = require("../models/product");
-const jsonwebtoken_1 = require("jsonwebtoken");
 const dotenv_1 = __importDefault(require("dotenv"));
+const Auth_1 = __importDefault(require("../middlewares/Auth"));
 dotenv_1.default.config();
 const store = new product_1.ProductStore();
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield store.index();
-    res.json(result);
+    try {
+        const result = yield store.index();
+        res.json(result);
+    }
+    catch (err) {
+        res.send(`Error: ${err}`);
+        throw new Error(`Error Couldn't Show Product: ${err}`);
+    }
 });
 const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -32,15 +38,6 @@ const show = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 const create = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const authorizationHeader = req.body.token;
-        const token = authorizationHeader.split(" ")[1];
-        (0, jsonwebtoken_1.verify)(token, String(process.env.TOKEN));
-    }
-    catch (err) {
-        res.status(401);
-        res.json("Access denied, invalid token");
-    }
     try {
         const name = req.body.name;
         const quantity = Number(req.body.quantity);
@@ -79,9 +76,9 @@ const del = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const productsRoutes = (app) => {
     app.get("/products", index);
-    app.post("/products", create);
+    app.post("/products", Auth_1.default, create);
     app.get("/products/:id", show);
-    app.patch("/products/:id", update);
-    app.delete("/products/:id", del);
+    app.patch("/products/:id", Auth_1.default, update);
+    app.delete("/products/:id", Auth_1.default, del);
 };
 exports.default = productsRoutes;

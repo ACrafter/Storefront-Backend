@@ -14,41 +14,77 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const supertest_1 = __importDefault(require("supertest"));
 const order_1 = __importDefault(require("../../handlers/order"));
-const user_1 = require("../../models/user");
+const user_1 = __importDefault(require("../../handlers/user"));
 const __1 = __importDefault(require("../.."));
 const request = (0, supertest_1.default)(__1.default);
 (0, order_1.default)(__1.default);
-describe('Order Routes', () => {
-    const U = new user_1.UserStore();
+(0, user_1.default)(__1.default);
+describe("Order Routes", () => {
+    let loginToken;
     beforeAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield U.create({
-            username: "ACrafter",
-            firstname: "Ahmed",
-            pass: "123",
-            status: "VIP",
+        const response = yield request
+            .post("/users")
+            .send({
+            uName: "name",
+            fName: "fName",
+            password: "qwerty",
+            status: "None",
         });
+        loginToken = response.body;
     }));
     afterAll(() => __awaiter(void 0, void 0, void 0, function* () {
-        yield U.delete("1");
+        yield request.delete("/users/1");
     }));
-    it('Create Method', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.post('/orders').send({ status: "Active", userid: "1", weight: 100 });
-        expect(response.status).toEqual(200);
-    }));
-    it('Index Method', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.get('/orders');
-        expect(response.status).toEqual(200);
-    }));
-    it('Show Method', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.get('/orders/1');
-        expect(response.status).toEqual(200);
-    }));
-    it('Update Method', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.patch('/orders/1').send({ prop: "weight", value: 120 });
-        expect(response.status).toEqual(200);
-    }));
-    it('Delete Method', () => __awaiter(void 0, void 0, void 0, function* () {
-        const response = yield request.delete('/orders/1');
-        expect(response.status).toEqual(200);
-    }));
+    describe('Unauthnicated Users', () => {
+        it("Create Method", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request
+                .post("/orders")
+                .send({ status: "Active", userid: "1", weight: 100 });
+            expect(response.status).toEqual(401);
+        }));
+        it("Index Method", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request.get("/orders");
+            expect(response.status).toEqual(401);
+        }));
+        it("Show Method", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request.get("/orders/1");
+            expect(response.status).toEqual(401);
+        }));
+        it("Update Method", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request
+                .patch("/orders/1")
+                .send({ prop: "weight", value: 120 });
+            expect(response.status).toEqual(401);
+        }));
+        it("Delete Method", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request.delete("/orders/1");
+            expect(response.status).toEqual(401);
+        }));
+    });
+    describe('Authed Users', () => {
+        it("Create Method", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request
+                .post("/orders")
+                .send({ status: "Active", userid: "1", weight: 100, token: loginToken });
+            expect(response.status).toEqual(200);
+        }));
+        it("Index Method", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request.get("/orders").send({ token: loginToken });
+            expect(response.status).toEqual(200);
+        }));
+        it("Show Method", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request.get("/orders/1").send({ token: loginToken });
+            expect(response.status).toEqual(200);
+        }));
+        it("Update Method", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request
+                .patch("/orders/1")
+                .send({ prop: "weight", value: 120, token: loginToken });
+            expect(response.status).toEqual(200);
+        }));
+        it("Delete Method", () => __awaiter(void 0, void 0, void 0, function* () {
+            const response = yield request.delete("/orders/1").send({ token: loginToken });
+            expect(response.status).toEqual(200);
+        }));
+    });
 });

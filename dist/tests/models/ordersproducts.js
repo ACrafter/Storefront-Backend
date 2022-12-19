@@ -15,7 +15,7 @@ Object.defineProperty(exports, "OrderProductStore", { enumerable: true, get: fun
 const user_1 = require("../../models/user");
 const order_1 = require("../../models/order");
 const product_1 = require("../../models/product");
-describe('OrdersProducts Model', () => {
+describe("OrdersProducts Model", () => {
     const U = new user_1.UserStore();
     const P = new product_1.ProductStore();
     const O = new order_1.OrderStore();
@@ -28,7 +28,9 @@ describe('OrdersProducts Model', () => {
             status: "VIP",
         });
         yield O.create({
-            userid: "1", weight: 50, status: "Active"
+            userid: "1",
+            weight: 50,
+            status: "Active",
         });
         yield P.create({
             name: "Spoon",

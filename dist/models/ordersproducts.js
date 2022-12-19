@@ -39,7 +39,11 @@ class OrderProductStore {
             try {
                 const connection = yield database_1.default.connect(); // Opening the connection
                 const sql = "INSERT INTO ordersproducts orderid, productid, quantity VALUES ($1, $2, $3) RETURNING *"; // Defining the SQL query
-                const result = yield connection.query(sql, [orderid, productid, quantity]); // Running the SQL query on the DB & storing the result
+                const result = yield connection.query(sql, [
+                    orderid,
+                    productid,
+                    quantity,
+                ]); // Running the SQL query on the DB & storing the result
                 connection.release(); // Closing the connection
                 return result.rows; // Returning the result
             }
@@ -52,9 +56,7 @@ class OrderProductStore {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const connection = yield database_1.default.connect(); // Opening the connection
-                const sql = "UPDATE ordersproducts SET " +
-                    modify +
-                    "=$1 WHERE id=$2 RETURNING *"; // Defining the SQL query
+                const sql = "UPDATE ordersproducts SET " + modify + "=$1 WHERE id=$2 RETURNING *"; // Defining the SQL query
                 const result = yield connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
                 connection.release(); // Closing the connection
                 return result.rows[0]; // Returning the result

@@ -8,7 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
+const Auth_1 = __importDefault(require("../middlewares/Auth"));
 const order_1 = require("../models/order");
 const store = new order_1.OrderStore();
 const index = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -74,11 +78,11 @@ const userOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 const ordersRoutes = (app) => {
-    app.get("/orders", index);
-    app.post("/orders", create);
-    app.get("/orders/:id", show);
-    app.patch("/orders/:id", update);
-    app.delete("/orders/:id", del);
-    app.delete("/orders/user/:id", userOrders);
+    app.get("/orders", Auth_1.default, index);
+    app.post("/orders", Auth_1.default, create);
+    app.get("/orders/:id", Auth_1.default, show);
+    app.patch("/orders/:id", Auth_1.default, update);
+    app.delete("/orders/:id", Auth_1.default, del);
+    app.delete("/orders/user/:id", Auth_1.default, userOrders);
 };
 exports.default = ordersRoutes;

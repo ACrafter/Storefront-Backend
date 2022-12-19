@@ -36,10 +36,9 @@ describe("User Routes", () => {
       const response = await request
         .patch("/users/2")
         .send({
-          uName: "name",
-          fName: "fName",
-          password: "qwerty",
-          status: "None",
+          prop: "fName",
+          value: "fName",
+          id: "1"
         });
       expect(response.status).toEqual(401);
     });

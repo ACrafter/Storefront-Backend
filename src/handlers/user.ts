@@ -2,8 +2,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import Express from "express";
 import { UserStore } from "../models/user";
-import { sign, verify } from "jsonwebtoken";
+import { sign } from "jsonwebtoken";
 import dotenv from "dotenv";
+import Auth from "../middlewares/Auth";
 
 const store = new UserStore();
 dotenv.config();
@@ -12,18 +13,6 @@ const index = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-  let auth: Boolean;
-  try {
-    const token = req.body.token;
-    verify(token, String(process.env.TOKEN));
-    auth = true;
-  } catch (err) {
-    auth = false;
-    res.status(401);
-    res.json("Access denied, invalid token");
-  }
-
-  if (auth === true) {
     try {
       const result = await store.index();
       res.json(result);
@@ -32,25 +21,12 @@ const index = async (
       res.send(`Error: ${err}`);
       throw new Error(`Error Couldn't Get Users: ${err}`);
     }
-  }
 };
 
 const show = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-  let auth: Boolean;
-  try {
-    const token = req.body.token;
-    verify(token, String(process.env.TOKEN));
-    auth = true;
-  } catch (err) {
-    auth = false;
-    res.status(401);
-    res.json("Access denied, invalid token");
-  }
-
-  if (auth === true) {
     try {
       const result = await store.show(req.params.id);
       res.json(result);
@@ -60,7 +36,6 @@ const show = async (
       res.send(`Error: ${err}`);
       throw new Error(`Error Couldn't Get User: ${err}`);
     }
-  }
 };
 
 const create = async (
@@ -92,18 +67,6 @@ const update = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-  let auth: Boolean;
-  try {
-    const token = req.body.token;
-    verify(token, String(process.env.TOKEN));
-    auth = true;
-  } catch (err) {
-    auth = false;
-    res.status(401);
-    res.json("Access denied, invalid token");
-  }
-
-  if (auth === true) {
     try {
       const modify: String = req.body.prop;
       const newValue: String = req.body.value;
@@ -115,25 +78,12 @@ const update = async (
       res.send(`Error: ${err}`);
       throw new Error(`Error Couldn't Update User: ${err}`);
     }
-  }
 };
 
 const del = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-  let auth: Boolean;
-  try {
-    const token = req.body.token;
-    verify(token, String(process.env.TOKEN));
-    auth = true;
-  } catch (err) {
-    auth = false;
-    res.status(401);
-    res.json("Access denied, invalid token");
-  }
-
-  if (auth === true) {
     try {
       const id: String = req.params.id;
       const result = await store.delete(id);
@@ -142,7 +92,6 @@ const del = async (
       res.send(`Error: ${err}`);
       throw new Error(`Error Couldn't Delete User: ${err}`);
     }
-  }
 };
 
 const auth = async (
@@ -166,12 +115,12 @@ const auth = async (
 };
 
 const userRoutes = (app: Express.Application): void => {
-  app.get("/users", index);
+  app.get("/users", Auth, index);
   app.get("/users/login", auth);
   app.post("/users", create);
-  app.get("/users/:id", show);
-  app.patch("/users/:id", update);
-  app.delete("/users/:id", del);
+  app.get("/users/:id", Auth, show);
+  app.patch("/users/:id", Auth, update);
+  app.delete("/users/:id", Auth, del);
 };
 
 export default userRoutes;
