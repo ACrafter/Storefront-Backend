@@ -2,8 +2,8 @@
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import Client from "../database";
-import bcrypt from "bcrypt";
 import dotenv from "dotenv";
+import bcryptjs from "bcryptjs";
 
 dotenv.config();
 const pepper = String(process.env.SECRET);
@@ -48,7 +48,7 @@ export class UserStore {
   async create(userInfo: User): Promise<User> {
     const username = userInfo.username;
     const firstname = userInfo.firstname;
-    const password = bcrypt.hashSync(`${userInfo.pass}${pepper}`, salt);
+    const password = bcryptjs.hashSync(`${userInfo.pass}${pepper}`, salt);
     const status = userInfo.status;
 
     try {
@@ -103,7 +103,7 @@ export class UserStore {
       const result = await conn.query(sql, [username]);
       if (result.rows.length) {
         const user = result.rows[0];
-        if (bcrypt.compareSync(password + pepper, user.pass)) {
+        if (bcryptjs.compareSync(password + pepper, user.pass)) {
           return user;
         }
       }
