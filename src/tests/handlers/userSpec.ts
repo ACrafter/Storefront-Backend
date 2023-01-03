@@ -51,7 +51,7 @@ describe("User Routes", () => {
 
   describe("Authenticated Users", () => {
     it("Index Method", async () => {
-      const response = await request.get("/users").send({ token: loginToken });
+      const response = await request.get("/users").send({ token: loginToken }); 
       expect(response.status).toEqual(200);
     });
 

@@ -2,9 +2,16 @@ import Express from "express";
 import ordersRoutes from "./handlers/order";
 import productsRoutes from "./handlers/product";
 import userRoutes from "./handlers/user";
+import cors from 'cors'
 
 const app = Express();
 
+// const corsOptions = {
+//   origin:'https://localhost:8000',
+//   optionsSuccessStatus: 200
+// }
+
+app.use(cors());
 app.use(Express.json());
 app.use(Express.urlencoded());
 
