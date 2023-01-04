@@ -67,12 +67,12 @@ function Login() {
                                     <h2 className="fw-bold mb-2 text-uppercase ">DB-project</h2>
                                     <p className=" mb-5">Please enter your login and password!</p>
                                     <div className="mb-3">
-                                        <Form onSubmit={LoginSubmit}>
+                                        <Form onSubmit={loginSubmit}>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className="text-center">
                                                     Email address
                                                 </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Username" onChange={(event) => setEmail(event.target.value)} />
+                                                <Form.Control type="email" placeholder="Enter email" onChange={(event) => setEmail(event.target.value)} />
                                                 <small id="emailHelp" className="text-danger form-text">
                                                     {emailError}
                                                 </small>
@@ -86,16 +86,6 @@ function Login() {
                                                 <Form.Control type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
                                                 <small id="passworderror" className="text-danger form-text">{passwordError}</small>
                                             </Form.Group>
-                                            <Form.Group
-                                                className="mb-3"
-                                                controlId="formBasicCheckbox"
-                                            >
-                                                <p className="small">
-                                                    <a className="text-primary" href="#!">
-                                                        Forgot password?
-                                                    </a>
-                                                </p>
-                                            </Form.Group>
                                             <div className="d-grid">
                                                 <Button variant="primary" type="submit">
                                                     Login
@@ -105,7 +95,7 @@ function Login() {
                                         <div className="mt-3">
                                             <p className="mb-0  text-center">
                                                 Don't have an account?{" "}
-                                                <a href="{''}" className="text-primary fw-bold">
+                                                <a href="\singup" className="text-primary fw-bold">
                                                     Sign Up
                                                 </a>
                                             </p>
