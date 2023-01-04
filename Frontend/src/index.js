@@ -8,6 +8,7 @@ import Navbaar from './components/navbar';
 import Error from './components/error';
 import Login from './components/login';
 import About from './components/about';
+import Singup from './components/singup';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -19,6 +20,7 @@ const HeaderRoute = () => {
 				<Route exact path='/' element={<Productlist />} />
 				<Route exact path='/login' element={<Login />} />
 				<Route exact path='/about' element={<About />} />
+				<Route exact path='/singup' element={<Singup />} />
 				<Route path='*' element={<Error />} />
 			</Routes>
 		</Router>
