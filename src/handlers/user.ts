@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
+/* eslint-disable valid-typeof */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import Express from "express";
@@ -45,7 +47,7 @@ const create = async (
   try {
     const uName: String = req.body.uName;
     const fName: String = req.body.fName;
-    const status: String = req.body.status;
+    const status: String = "None";
     const password: String = req.body.password;
 
     await store.create({
@@ -94,7 +96,7 @@ const del = async (
     }
 };
 
-const auth = async (
+const validate = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
@@ -103,12 +105,13 @@ const auth = async (
     const pass: String = req.body.pass;
 
     const result = await store.authenticate(uName, pass);
-    const x: null = null;
-    if (typeof result !== typeof x) {
+    if (result) {
       const token = sign(pass, String(process.env.TOKEN));
       res.json(token);
+    } else {
+      res.send('None'); 
     }
-  } catch (err) {
+  } catch (err) {    
     res.send(`Error: ${err}`);
     throw new Error(`Error Couldn't Login User: ${err}`);
   }
@@ -116,7 +119,7 @@ const auth = async (
 
 const userRoutes = (app: Express.Application): void => {
   app.get("/users", Auth, index);
-  app.get("/users/login", auth);
+  app.post("/users/login", validate);
   app.post("/users", create);
   app.get("/users/:id", Auth, show);
   app.patch("/users/:id", Auth, update);

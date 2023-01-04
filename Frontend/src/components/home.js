@@ -8,7 +8,7 @@ function Productlist() {
     let [products, setProducts] = useState();
     let [loading, setLoading] = useState(false);
 
-    const fetchData = () =>{
+    const fetchProducts = () =>{
         return axios.get("http://localhost:3000/products")
         .then(response => {
             setProducts(response.data)
@@ -17,7 +17,7 @@ function Productlist() {
     }
 
     useEffect(() => {
-        fetchData();
+        fetchProducts();
     }, [])
 
     console.log(loading);

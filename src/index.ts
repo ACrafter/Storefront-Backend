@@ -5,12 +5,6 @@ import userRoutes from "./handlers/user";
 import cors from 'cors'
 
 const app = Express();
-
-// const corsOptions = {
-//   origin:'https://localhost:8000',
-//   optionsSuccessStatus: 200
-// }
-
 app.use(cors());
 app.use(Express.json());
 app.use(Express.urlencoded());

@@ -23,9 +23,4 @@ function Navbaar() {
     );
 };
 
-const Test = () => {
-    return (<h1>aerwwwwwwwwgaegafsdgaegheg</h1>);
-};
-
-
 export default Navbaar;
