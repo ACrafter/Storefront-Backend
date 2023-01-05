@@ -1,6 +1,7 @@
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import React from 'react';
 import { useState } from 'react'
+import axios from "axios";
 
 
 function Singup() {
@@ -12,40 +13,39 @@ function Singup() {
     const [passwordError, setpasswordError] = useState("");
     const [emailError, setemailError] = useState("");
 
-    const handleValidation = (event) => {
-        console.log(email);
-        console.log(password)
-        let formIsValid = true;
+    // const handleValidation = (event) => {
+    //     console.log(username);
+    //     console.log(password)
+    //     let formIsValid = true;
 
-        if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-            formIsValid = false;
-            setemailError("Email Not Valid");
-            return false;
-        } else {
-            setemailError("");
-            formIsValid = true;
-        }
+    //     if (!username.match(/^\w+[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
+    //         formIsValid = false;
+    //         setemailError("Email Not Valid");
+    //         return false;
+    //     } else {
+    //         setemailError("");
+    //         formIsValid = true;
+    //     }
 
-        if (!password.match(/^[a-zA-Z]{8,22}$/)) {
-            formIsValid = false;
-            setpasswordError(
-                "Only Letters and length must best min 8 Chracters and Max 22 Chracters"
-            );
-            return false;
-        } else {
-            setpasswordError("");
-            formIsValid = true;
-        }
+    //     if (!password.match(/^[a-zA-Z]{8,22}$/)) {
+    //         formIsValid = false;
+    //         setpasswordError(
+    //             "Only Letters and length must best min 8 Chracters and Max 22 Chracters"
+    //         );
+    //         return false;
+    //     } else {
+    //         setpasswordError("");
+    //         formIsValid = true;
+    //     }
 
-        return formIsValid;
-    };
+    //     return formIsValid;
+    // };
+
     const Submit = (e) => {
         e.preventDefault();
-        if (handleValidation()) {
-            console.log("yess");
-        } else {
-            console.log("fiald");
-        }
+        axios.post("http://localhost:3000/users", {uName: email, fName: firstname, pass: password}).then((response) => {
+            console.log(response.data);
+        })   
     };
 
     return (
@@ -63,13 +63,13 @@ function Singup() {
                                         <Form onSubmit={Submit}>
                                             <Form.Group className="mb-3" controlId="formBasicText">
                                                 <Form.Label className="text-center">
-                                                    User First Name
+                                                    Username
                                                 </Form.Label>
                                                 <Form.Control type="text" placeholder="Enter Username" onChange={(event) => setfname(event.target.value)} />
                                             </Form.Group>
                                             <Form.Group className="mb-3" controlId="formBasicText">
                                                 <Form.Label className="text-center">
-                                                    User Last Name
+                                                    User firstname
                                                 </Form.Label>
                                                 <Form.Control type="text" placeholder="Enter Username" onChange={(event) => setlname(event.target.value)} />
                                             </Form.Group>
@@ -78,7 +78,7 @@ function Singup() {
                                                 <Form.Label className="text-center">
                                                     Email address
                                                 </Form.Label>
-                                                <Form.Control type="email" placeholder="Enter email" onChange={(event) => setEmail(event.target.value)} />
+                                                <Form.Control type="text" placeholder="Enter email" onChange={(event) => setEmail(event.target.value)} />
                                                 <small id="emailHelp" className="text-danger form-text">
                                                     {emailError}
                                                 </small>

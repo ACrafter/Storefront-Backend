@@ -48,7 +48,7 @@ const create = async (
     const uName: String = req.body.uName;
     const fName: String = req.body.fName;
     const status: String = "None";
-    const password: String = req.body.password;
+    const password: String = req.body.pass;
 
     await store.create({
       username: uName,

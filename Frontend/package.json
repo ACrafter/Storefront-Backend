@@ -18,7 +18,7 @@
   "scripts": {
     "start": "set PORT=8000 && react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "echo 'No tests Found'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

@@ -39,6 +39,11 @@ function Login() {
 
     //     return formIsValid;
     // };
+    
+    const redirectHome = () => {
+        return redirect("/");
+    }
+
     let token;
     const validateUser = () => {
         return axios({method: 'post', url:"http://localhost:3000/users/login", data: {uName: email, pass: password} } )
@@ -46,6 +51,7 @@ function Login() {
             if(response.data !== 'None'){
                 token = response.data;
                 console.log(token);
+                //  return redirect("http://localhost:8000/");
             }
         })
     }
@@ -67,12 +73,12 @@ function Login() {
                                     <h2 className="fw-bold mb-2 text-uppercase ">DB-project</h2>
                                     <p className=" mb-5">Please enter your login and password!</p>
                                     <div className="mb-3">
-                                        <Form onSubmit={loginSubmit}>
+                                        <Form onSubmit={LoginSubmit}>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className="text-center">
                                                     Email address
                                                 </Form.Label>
-                                                <Form.Control type="email" placeholder="Enter email" onChange={(event) => setEmail(event.target.value)} />
+                                                <Form.Control type="text" placeholder="Enter email" onChange={(event) => setEmail(event.target.value)} />
                                                 <small id="emailHelp" className="text-danger form-text">
                                                     {emailError}
                                                 </small>

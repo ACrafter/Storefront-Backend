@@ -1,0 +1,58 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.1.0
+  aws-eb: circleci/aws-elastic-beanstalk@2.0.1
+  aws-cli: circleci/aws-cli@3.1.4
+Branches:
+  only:
+    - main
+
+jobs:
+  frontend_build_test:
+    working_directory: ~/STOREFRONTBACKEND/Frontend
+  docker:
+    - image: "cimg/base:stable"
+  steps:
+    - node/install
+    - checkout
+    - ls
+    - dir
+    - run:
+        name: Installing Frontend dependencies
+        command: |
+          npm run install
+    - run:
+        name: Frontend Tests
+        command: |
+          npm run test
+    - run:
+        name: App Build
+        command: |
+          npm run build
+
+workflows:
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - frontend_build_test
+      # - backend_build_test
+      # - deploy_frontend_staging:
+      #     requires:
+      #       - frontend_build_test
+      # - deploy_backend_staging:
+      #     requires:
+      #       - backend_build_test
+      # - frontend_deployment_approval:
+      #     type: approval
+      #     requires:
+      #       - deploy_frontend_staging
+      # - backend_deployment_approval:
+      #     type: approval
+      #     requires:
+      #       - deploy_backend_staging
+      # - deploy_frontend_prod:
+      #     requires:
+      #       - frontend_deployment_approval
+      # - deploy_backend_prod:
+      #     requires:
+      #       - backend_deployment_approval
