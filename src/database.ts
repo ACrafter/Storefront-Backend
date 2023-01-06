@@ -7,17 +7,17 @@ const { HOST, DB, TESTDB, USER, PASS, ENV } = process.env;
 
 let Client: any;
 
-if (ENV === "dev") {
+if (ENV === "test") {
   Client = new Pool({
     host: HOST,
-    database: DB,
+    database: TESTDB,
     user: USER,
     password: PASS,
   });
 } else {
   Client = new Pool({
     host: HOST,
-    database: TESTDB,
+    database: DB,
     user: USER,
     password: PASS,
   });
