@@ -51,7 +51,6 @@ function Login() {
             if(response.data !== 'None'){
                 token = response.data;
                 console.log(token);
-                //  return redirect("http://localhost:8000/");
             }
         })
     }
