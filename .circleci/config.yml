@@ -21,12 +21,9 @@ jobs:
       - checkout:
           path: ~/storefront-backend
       - run:
-          name: Installing Frontend dependencies
+          name: Installing dependencies
           command: |
             npm install
-            ls
-            pwd
-            ls ~
       - run:
           name: Frontend Tests
           command: |
@@ -35,11 +32,32 @@ jobs:
           name: App Build
           command: |
             npm run build
-            ls
-            pwd
+  backend_build_test:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - node/install
+      - checkout:
+      - run:
+          name: Installing dependencies
+          command: |
+            npm run install
+      - run:
+          name: Linting
+          command: |
+            npm run lint
+      - run:
+          name: App Build
+          command: |
+            npm run build
+      - run:
+          name: Jasmine Tests
+          command: |
+            npm run test
 
 workflows:
   version: 2
   build-test-and-deploy:
     jobs:
       - frontend_build_test
+      - backend_build_test
