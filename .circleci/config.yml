@@ -14,7 +14,7 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - node/install
-      - checkout
+      - checkout:
           path: ~/repo
       - run:
           name: Installing Frontend dependencies
