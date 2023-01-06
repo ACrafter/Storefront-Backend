@@ -35,7 +35,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ./build/*
+            - ./build
   backend_build_test:
     docker:
       - image: "cimg/base:stable"
@@ -67,12 +67,14 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - attach_workspace:
-          at: ./build
+          at: .
       - node/install
       - aws-cli/setup
       - run:
           name: App Deploy
           command: |
+            ls
+            pwd
             aws s3 cp --recursive ./build s3://frontend-storefront/
   deploy_backend:
     docker:
