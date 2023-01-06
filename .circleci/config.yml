@@ -73,8 +73,6 @@ jobs:
       - run:
           name: App Deploy
           command: |
-            ls
-            pwd
             aws s3 cp --recursive ./build s3://frontend-storefront/
   deploy_backend:
     docker:
@@ -86,8 +84,10 @@ jobs:
       - run:
           name: App Deploy
           command: |
-            eb setenv env=prod HOST=$HOST DB=$DB TESTDB=$TESTDB USER=$USER PASS=$PASS SECRET=$SECRET SALT_ROUNDS=$SALT_ROUNDS TOKEN=$TOKEN
+            ls
+            pwd
             eb init -p "Node.js 16 running on 64bit Amazon Linux 2" --region us-east-1 Storefront
+            eb setenv env=prod HOST=$HOST DB=$DB TESTDB=$TESTDB USER=$USER PASS=$PASS SECRET=$SECRET SALT_ROUNDS=$SALT_ROUNDS TOKEN=$TOKEN
             eb deploy Storefront-env
             eb status
 workflows:
