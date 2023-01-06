@@ -15,12 +15,10 @@ jobs:
     steps:
       - node/install
       - checkout
-      - ls
-      - dir
       - run:
           name: Installing Frontend dependencies
           command: |
-            npm run install
+            npm install
       - run:
           name: Frontend Tests
           command: |
@@ -29,6 +27,8 @@ jobs:
           name: App Build
           command: |
             npm run build
+            ls
+            dir
 
 workflows:
   version: 2
