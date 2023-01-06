@@ -37,7 +37,7 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - node/install
-      - checkout:
+      - checkout
       - run:
           name: Installing dependencies
           command: |
