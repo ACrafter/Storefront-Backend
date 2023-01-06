@@ -58,6 +58,10 @@ jobs:
           name: Jasmine Tests
           command: |
             echo "npm run test"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./*
   deploy_frontend:
     docker:
       - image: "cimg/base:stable"
@@ -70,6 +74,21 @@ jobs:
           name: App Deploy
           command: |
             aws s3 cp --recursive ./build s3://frontend-storefront/
+  deploy_backend:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - attach_workspace:
+          at: ./
+      - aws-eb/setup
+      - run:
+          name: App Deploy
+          command: |
+            cd backend
+            eb setenv env=prod HOST=$HOST DB=$DB TESTDB=$TESTDB USER=$USER PASS=$PASS SECRET=$SECRET SALT_ROUNDS=$SALT_ROUNDS TOKEN=$TOKEN
+            eb init -p "Node.js 16 running on 64bit Amazon Linux 2" --region us-east-1 udacity-storefront-backend
+            eb deploy Storefront-env
+            eb status
 workflows:
   version: 2
   build-test-and-deploy:
@@ -77,6 +96,10 @@ workflows:
       - frontend_build_test
       - backend_build_test
       - deploy_frontend:
+          requires:
+            - frontend_build_test
+            - backend_build_test
+      - deploy_backend:
           requires:
             - frontend_build_test
             - backend_build_test
