@@ -14,12 +14,14 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - node/install
-      - checkout:
-          path: ~/repo
+      - checkout
       - run:
           name: Installing Frontend dependencies
           command: |
             npm install
+            ls
+            pwd
+            ls ~
       - run:
           name: Frontend Tests
           command: |
@@ -29,7 +31,7 @@ jobs:
           command: |
             npm run build
             ls
-            dir
+            pwd
 
 workflows:
   version: 2
