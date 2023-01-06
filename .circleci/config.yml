@@ -35,7 +35,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - ./*
+            - ./build/*
   backend_build_test:
     docker:
       - image: "cimg/base:stable"
@@ -67,7 +67,7 @@ jobs:
       - image: "cimg/base:stable"
     steps:
       - attach_workspace:
-          at: ./
+          at: ./build
       - node/install
       - aws-cli/setup
       - run:
