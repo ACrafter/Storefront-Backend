@@ -9,12 +9,12 @@ Branches:
 
 jobs:
   frontend_build_test:
-    # working_directory: ~/storefront-backend/Frontend
     docker:
       - image: "cimg/base:stable"
     steps:
       - node/install
       - checkout
+      - working_directory: ~/project/Frontend
       - run:
           name: Changing working directory
           command: |
