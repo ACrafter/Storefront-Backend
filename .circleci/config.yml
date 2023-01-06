@@ -9,16 +9,17 @@ Branches:
 
 jobs:
   frontend_build_test:
+    working_directory: ~/storefront-backend/Frontend
     docker:
       - image: "cimg/base:stable"
     steps:
       - node/install
-      - checkout
-      - working_directory: ~/project/Frontend
       - run:
-          name: Changing working directory
+          name: deleting repo dir
           command: |
-            cd Frontend
+            rm -rf ~/storefront-backend
+      - checkout:
+          path: ~/storefront-backend
       - run:
           name: Installing Frontend dependencies
           command: |
