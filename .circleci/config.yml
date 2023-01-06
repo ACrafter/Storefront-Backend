@@ -32,6 +32,10 @@ jobs:
           name: App Build
           command: |
             npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./*
   backend_build_test:
     docker:
       - image: "cimg/base:stable"
@@ -54,10 +58,25 @@ jobs:
           name: Jasmine Tests
           command: |
             echo "npm run test"
-
+  deploy_frontend:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - attach_workspace:
+          at: ./
+      - node/install
+      - aws-cli/setup
+      - run:
+          name: App Deploy
+          command: |
+            aws s3 cp --recursive ./Frontend/build s3://frontend-storefront/
 workflows:
   version: 2
   build-test-and-deploy:
     jobs:
       - frontend_build_test
       - backend_build_test
+      - frontend_deploy:
+          requires:
+            - frontend_build_test
+            - backend_build_test
