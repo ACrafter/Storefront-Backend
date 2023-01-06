@@ -5,5 +5,5 @@ CREATE TABLE products(
     brand VARCHAR(100) NOT NULL,
     quantity INT,
     description TEXT,
-    image BYTEA NOT NULL
+    image TEXT NOT NULL
 );
