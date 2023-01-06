@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node dist/index",
     "build": "npx tsc",
     "server": "nodemon src/index.ts",
     "test": "cross-env ENV=test \"db-migrate down --env test --c 4 &&  db-migrate --e test up && npm run build && jasmine\"",
