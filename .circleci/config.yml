@@ -76,7 +76,7 @@ workflows:
     jobs:
       - frontend_build_test
       - backend_build_test
-      - frontend_deploy:
+      - deploy_frontend:
           requires:
             - frontend_build_test
             - backend_build_test
