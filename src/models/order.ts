@@ -99,7 +99,7 @@ export class OrderStore {
   async getOrdersByUser(id: String): Promise<Order[]> {
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT id, weight, status FROM orders WHERE userid=($1)"; // Defining the SQL query
+      const sql = "SELECT * FROM orders WHERE userid=($1)"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows; // Returning the result

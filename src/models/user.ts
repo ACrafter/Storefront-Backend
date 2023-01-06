@@ -12,11 +12,9 @@ const salt = Number(process.env.SALT_ROUNDS);
 export interface User {
   id?: Number;
   username?: String;
-  pass?: String;
+  password?: String;
   firstname?: String;
-  lName?: String;
-  location?: String;
-  status?: String;
+  lastname?: String;
 }
 
 export class UserStore {
@@ -36,7 +34,7 @@ export class UserStore {
   async show(id: String): Promise<User> {
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT username, firstname, status FROM users WHERE id=$1"; // Defining the SQL query
+      const sql = "SELECT username, firstname FROM users WHERE id=$1"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
@@ -48,18 +46,16 @@ export class UserStore {
   async create(userInfo: User): Promise<User> {
     const username = userInfo.username;
     const firstname = userInfo.firstname;
-    const password = bcryptjs.hashSync(`${userInfo.pass}${pepper}`, salt);
-    const status = userInfo.status;
+    const password = bcryptjs.hashSync(`${userInfo.password}${pepper}`, salt);
 
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql =
-        "INSERT INTO users (username, firstname, pass, status) VALUES ($1, $2 , $3, $4) RETURNING id, username, firstname ,status"; // Defining the SQL query
+        "INSERT INTO users (username, firstname, password,) VALUES ($1, $2 , $3) RETURNING id, username, firstname"; // Defining the SQL query
       const result = await connection.query(sql, [
         username,
         firstname,
         password,
-        status,
       ]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
@@ -74,7 +70,7 @@ export class UserStore {
       const sql =
         "UPDATE users SET " +
         modify +
-        "=$1 WHERE id=$2 RETURNING username, firstname ,status"; // Defining the SQL query
+        "=$1 WHERE id=$2 RETURNING username, firstname"; // Defining the SQL query
       const result = await connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
@@ -111,44 +107,6 @@ export class UserStore {
     } catch (err) {
       console.log(err);
       return null;
-    }
-  }
-
-  async getVIP(): Promise<User[]> {
-    try {
-      const connection = await Client.connect(); // Opening the connection
-      const sql =
-        "SELECT username, firstname, status FROM users WHERE status='VIP'"; // Defining the SQL query
-      const result = await connection.query(sql); // Running the SQL query on the DB & storing the result
-      connection.release(); // Closing the connection
-      return result.rows; // Returning the result
-    } catch (err) {
-      throw new Error(`Couldn't get Sellers: ${err}`);
-    }
-  }
-
-  async getFrequent(): Promise<User[]> {
-    try {
-      const connection = await Client.connect(); // Opening the connection
-      const sql =
-        "SELECT username, firstname FROM users WHERE status='Frequent'"; // Defining the SQL query
-      const result = await connection.query(sql); // Running the SQL query on the DB & storing the result
-      connection.release(); // Closing the connection
-      return result.rows; // Returning the result
-    } catch (err) {
-      throw new Error(`Couldn't get Frequent users: ${err}`);
-    }
-  }
-
-  async getNone(): Promise<User[]> {
-    try {
-      const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT username, firstname FROM users WHERE status='None'"; // Defining the SQL query
-      const result = await connection.query(sql); // Running the SQL query on the DB & storing the result
-      connection.release(); // Closing the connection
-      return result.rows; // Returning the result
-    } catch (err) {
-      throw new Error(`Couldn't get None Frequent users: ${err}`);
     }
   }
 }
