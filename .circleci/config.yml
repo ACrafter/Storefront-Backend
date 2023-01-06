@@ -84,9 +84,8 @@ jobs:
       - run:
           name: App Deploy
           command: |
-            cd backend
             eb setenv env=prod HOST=$HOST DB=$DB TESTDB=$TESTDB USER=$USER PASS=$PASS SECRET=$SECRET SALT_ROUNDS=$SALT_ROUNDS TOKEN=$TOKEN
-            eb init -p "Node.js 16 running on 64bit Amazon Linux 2" --region us-east-1 udacity-storefront-backend
+            eb init -p "Node.js 16 running on 64bit Amazon Linux 2" --region us-east-1 Storefront
             eb deploy Storefront-env
             eb status
 workflows:
