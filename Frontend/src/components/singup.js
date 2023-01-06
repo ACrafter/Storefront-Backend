@@ -43,7 +43,7 @@ function Singup() {
 
     const Submit = (e) => {
         e.preventDefault();
-        axios.post("http://localhost:3000/users", {uName: email, fName: firstname, pass: password}).then((response) => {
+        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users", {uName: email, fName: firstname, pass: password}).then((response) => {
             console.log(response.data);
         })   
     };

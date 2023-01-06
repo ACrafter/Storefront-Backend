@@ -9,7 +9,7 @@ function Productlist() {
     let [loading, setLoading] = useState(false);
 
     const fetchProducts = () =>{
-        return axios.get("http://localhost:3000/products")
+        return axios.get("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/products")
         .then(response => {
             setProducts(response.data)
             setLoading(true)

@@ -3,7 +3,7 @@ import { data } from '../products';
 
 function Test() {
     let data;
-    async () => { data = fetch("http://localhost:3000").then((res) => res.json()); }
+    async () => { data = fetch("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com").then((res) => res.json()); }
     return (
     
     );

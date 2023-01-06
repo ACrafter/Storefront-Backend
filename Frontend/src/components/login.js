@@ -46,7 +46,7 @@ function Login() {
 
     let token;
     const validateUser = () => {
-        return axios({method: 'post', url:"http://localhost:3000/users/login", data: {uName: email, pass: password} } )
+        return axios({method: 'post', url:"http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users/login", data: {uName: email, pass: password} } )
         .then((response) => {
             if(response.data !== 'None'){
                 token = response.data;
