@@ -9,12 +9,13 @@ Branches:
 
 jobs:
   frontend_build_test:
-    working_directory: ~/STOREFRONTBACKEND/Frontend
+    working_directory: ~/repo/Frontend
     docker:
       - image: "cimg/base:stable"
     steps:
       - node/install
       - checkout
+          path: ~/repo
       - run:
           name: Installing Frontend dependencies
           command: |
