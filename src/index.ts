@@ -4,9 +4,11 @@ import productsRoutes from "./handlers/product";
 import userRoutes from "./handlers/user";
 import cors from "cors";
 import cartsRoutes from "./handlers/cart";
+
 const PORT = process.env.PORT ?? 3000;
 const app = Express();
-app.use(cors({origin: 'http://frontend-storefront.s3-website-us-east-1.amazonaws.com/'}));
+
+app.use(cors({origin: '*',}));
 app.use(Express.json());
 app.use(Express.urlencoded());
 
