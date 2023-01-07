@@ -47,18 +47,18 @@ const create = async (
   try {
     const uName: String = req.body.uName;
     const fName: String = req.body.fName;
-    const status: String = "None";
-    const password: String = req.body.pass;
+    const lName: String = req.body.lName;
+    const password: String = req.body.password;
 
-    await store.create({
+    const newUser = await store.create({
       username: uName,
       firstname: fName,
-      pass: password,
-      status,
+      lastname: lName,
+      password,
     });
 
     const token = sign(password, String(process.env.TOKEN));
-    res.json(token);
+    res.json(token, newUser.id);
   } catch (err) {
     res.send(`Error: ${err}`);
     throw new Error(`Error Couldn't Create User: ${err}`);

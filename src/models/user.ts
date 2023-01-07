@@ -34,7 +34,7 @@ export class UserStore {
   async show(id: String): Promise<User> {
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT username, firstname FROM users WHERE id=$1"; // Defining the SQL query
+      const sql = "SELECT * FROM users WHERE id=$1"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
@@ -47,15 +47,17 @@ export class UserStore {
     const username = userInfo.username;
     const firstname = userInfo.firstname;
     const password = bcryptjs.hashSync(`${userInfo.password}${pepper}`, salt);
+    const lastname = userInfo.lastname;
 
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql =
-        "INSERT INTO users (username, firstname, password,) VALUES ($1, $2 , $3) RETURNING id, username, firstname"; // Defining the SQL query
+        "INSERT INTO users (username, firstname, password, lastname) VALUES ($1, $2 , $3, $4) RETURNING *"; // Defining the SQL query
       const result = await connection.query(sql, [
         username,
         firstname,
         password,
+        lastname
       ]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result

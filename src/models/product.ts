@@ -29,7 +29,7 @@ export class ProductStore {
   async show(id: String): Promise<Product> {
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT name, price, brand FROM products WHERE id=$1"; // Defining the SQL query
+      const sql = "SELECT * FROM products WHERE id=$1"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
@@ -40,14 +40,16 @@ export class ProductStore {
 
   async create(productInfo: Product): Promise<Product> {
     const name = productInfo.name;
-    const type = productInfo.type;
     const price = productInfo.price;
+    const brand = productInfo.brand;
+    const desc = productInfo.description;
+    const image = productInfo.image;
 
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql =
-        "INSERT INTO products (name, price, brand, image) VALUES ($1, $2 , $3) RETURNING id, name, price, brand"; // Defining the SQL query
-      const result = await connection.query(sql, [name, type, price]); // Running the SQL query on the DB & storing the result
+        "INSERT INTO products (name, price, brand, description, image) VALUES ($1, $2 , $3, $4, $5) RETURNING *"; // Defining the SQL query
+      const result = await connection.query(sql, [name, price, brand, desc, image]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
     } catch (err) {

@@ -7,6 +7,13 @@ export interface Cart {
   userid?: String | Number;
 }
 
+
+export interface CartProducts {
+  id?: String | Number,
+  cartid? : String | Number,
+  productid? : String | Number
+}
+
 export class CartStore {
   async index(): Promise<Cart[]> {
     try {
@@ -39,7 +46,7 @@ export class CartStore {
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql =
-        "INSERT INTO carts (userId) VALUES ($1) RETURNING id, userId"; // Defining the SQL query
+        "INSERT INTO carts (userId) VALUES ($1) RETURNING *"; // Defining the SQL query
       const result = await connection.query(sql, [userid]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
@@ -70,7 +77,7 @@ export class CartStore {
       const sql =
         "UPDATE carts SET " +
         modify +
-        "=$1 WHERE id=$2 RETURNING userid, weight, status"; // Defining the SQL query
+        "=$1 WHERE id=$2 RETURNING *"; // Defining the SQL query
       const result = await connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
@@ -92,4 +99,27 @@ export class CartStore {
   }
 
   // Methods specific to the model
+  async getCartProducts(id: String): Promise<Cart[]> {
+    try {
+      const connection = await Client.connect(); // Opening the connection
+      const sql = "SELECT * FROM ordersproducts WHERE orderid=($1)"; // Defining the SQL query
+      const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
+      connection.release(); // Closing the connection
+      return result.rows; // Returning the result
+    } catch (err) {
+      throw new Error(`Couldn't get Products from Cart whose id=${id}: ${err}`);
+    }
+  }
+
+  async addCartProducts(cart: String, prod: String): Promise<CartProducts>{
+    try {
+      const connection = await Client.connect(); // Opening the connection
+      const sql = "INSERT INTO cartsproducts (productsid, cartsid) VALUES ($1, $2) RETURNING *"; // Defining the SQL query
+      const result = await connection.query(sql, [prod, cart]); // Running the SQL query on the DB & storing the result
+      connection.release(); // Closing the connection
+      return result.rows; // Returning the result
+    } catch (err) {
+      throw new Error(`Couldn't Add Product whose id:${prod} to Cart whose id:${cart}: ${err}`);
+    }
+  }
 }

@@ -3,6 +3,7 @@ import ordersRoutes from "./handlers/order";
 import productsRoutes from "./handlers/product";
 import userRoutes from "./handlers/user";
 import cors from "cors";
+import cartsRoutes from "./handlers/cart";
 const PORT = process.env.PORT ?? 3000;
 const app = Express();
 app.use(cors());
@@ -18,6 +19,7 @@ app.get("/", (req: Express.Request, res: Express.Response) => {
 userRoutes(app);
 productsRoutes(app);
 ordersRoutes(app);
+cartsRoutes(app);
 
 app.listen(PORT, () => {
   console.log("Server Running On Port 3000");

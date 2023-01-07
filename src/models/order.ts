@@ -1,3 +1,4 @@
+import { Product } from './product';
 /* eslint-disable @typescript-eslint/restrict-plus-operands */
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import Client from "../database";
@@ -8,6 +9,12 @@ export interface Order {
   weight: Number;
   status: String;
   ETA?: String;
+}
+
+export interface OrderProducts {
+  id?: String | Number,
+  orderid? : String | Number,
+  productid? : String | Number
 }
 
 export class OrderStore {
@@ -26,25 +33,26 @@ export class OrderStore {
   async getOne(id: Number): Promise<Order> {
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT id, userid, weight FROM orders WHERE id=$1"; // Defining the SQL query
+      const sql = "SELECT * FROM orders WHERE id=$1"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
     } catch (err) {
-      throw new Error(`Couldn't retrive Order whose's id=${id}: ${err}`);
+      throw new Error(`Couldn't retrive Order whose id=${id}: ${err}`);
     }
   }
 
   async create(orderInfo: Order): Promise<Order> {
     const userid = orderInfo.userid;
+    const eta = orderInfo.ETA;
     const weight = orderInfo.weight;
     const status = orderInfo.status;
 
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql =
-        "INSERT INTO orders (userId, weight, status) VALUES ($1, $2 , $3) RETURNING id, userId, weight, status"; // Defining the SQL query
-      const result = await connection.query(sql, [userid, weight, status]); // Running the SQL query on the DB & storing the result
+        "INSERT INTO orders (userId, weight, status, ETA) VALUES ($1, $2 , $3, $4) RETURNING *"; // Defining the SQL query
+      const result = await connection.query(sql, [userid, weight, status, eta]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
     } catch (err) {
@@ -55,12 +63,12 @@ export class OrderStore {
   async show(id: String): Promise<Order> {
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT userid, weight, status FROM orders WHERE id=($1)"; // Defining the SQL query
+      const sql = "SELECT * FROM orders WHERE id=($1)"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
     } catch (err) {
-      throw new Error(`Couldn't update Order who's id=${id}: ${err}`);
+      throw new Error(`Couldn't update Order whose id=${id}: ${err}`);
     }
   }
 
@@ -74,12 +82,12 @@ export class OrderStore {
       const sql =
         "UPDATE orders SET " +
         modify +
-        "=$1 WHERE id=$2 RETURNING userid, weight, status"; // Defining the SQL query
+        "=$1 WHERE id=$2 RETURNING *"; // Defining the SQL query
       const result = await connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
     } catch (err) {
-      throw new Error(`Couldn't update Order who's id=${id}: ${err}`);
+      throw new Error(`Couldn't update Order whose id=${id}: ${err}`);
     }
   }
 
@@ -91,7 +99,7 @@ export class OrderStore {
       connection.release(); // Closing the connection
       return result.rows; // Returning the result
     } catch (err) {
-      throw new Error(`Couldn't update Order who's id=${id}: ${err}`);
+      throw new Error(`Couldn't delete Order whose id=${id}: ${err}`);
     }
   }
 
@@ -100,6 +108,30 @@ export class OrderStore {
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql = "SELECT * FROM orders WHERE userid=($1)"; // Defining the SQL query
+      const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
+      connection.release(); // Closing the connection
+      return result.rows; // Returning the result
+    } catch (err) {
+      throw new Error(`Couldn't get the Orders of the User whose id=${id}: ${err}`);
+    }
+  }
+  
+  async addOrderProducts(order: String, prod: String): Promise<OrderProducts>{
+    try {
+      const connection = await Client.connect(); // Opening the connection
+      const sql = "INSERT INTO ordersproducts (productsid, ordersid) VALUES ($1, $2) RETURNING *"; // Defining the SQL query
+      const result = await connection.query(sql, [prod, order]); // Running the SQL query on the DB & storing the result
+      connection.release(); // Closing the connection
+      return result.rows; // Returning the result
+    } catch (err) {
+      throw new Error(`Couldn't Add Product whose id:${prod} to Order whose id:${order}`);
+    }
+  }
+
+  async getOrderProducts(id: String): Promise<Product[]> {
+    try {
+      const connection = await Client.connect(); // Opening the connection
+      const sql = "SELECT productid FROM ordersproducts WHERE orderid=($1);"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows; // Returning the result
