@@ -49,7 +49,7 @@ const create = async (
     const fName: String = req.body.fName;
     const lName: String = req.body.lName;
     const password: String = req.body.password;
-
+    
     const newUser = await store.create({
       username: uName,
       firstname: fName,
