@@ -5,10 +5,11 @@ import Client from "../database";
 export interface Product {
   id?: Number;
   name?: String;
+  price?:Number;
+  brand?: String;
   type?: String;
-  quantity?: Number;
   description?: String;
-  picture?: unknown;
+  image?: unknown;
 }
 
 export class ProductStore {
@@ -28,7 +29,7 @@ export class ProductStore {
   async show(id: String): Promise<Product> {
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT name, type, quantity FROM products WHERE id=$1"; // Defining the SQL query
+      const sql = "SELECT * FROM products WHERE id=$1"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
@@ -39,14 +40,16 @@ export class ProductStore {
 
   async create(productInfo: Product): Promise<Product> {
     const name = productInfo.name;
-    const type = productInfo.type;
-    const quantity = productInfo.quantity;
+    const price = productInfo.price;
+    const brand = productInfo.brand;
+    const desc = productInfo.description;
+    const image = productInfo.image;
 
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql =
-        "INSERT INTO products (name, type, quantity) VALUES ($1, $2 , $3) RETURNING id, name, type, quantity"; // Defining the SQL query
-      const result = await connection.query(sql, [name, type, quantity]); // Running the SQL query on the DB & storing the result
+        "INSERT INTO products (name, price, brand, description, image) VALUES ($1, $2 , $3, $4, $5) RETURNING *"; // Defining the SQL query
+      const result = await connection.query(sql, [name, price, brand, desc, image]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
     } catch (err) {
@@ -64,7 +67,7 @@ export class ProductStore {
       const sql =
         "UPDATE products SET " +
         modify +
-        "=$1 WHERE id=$2 RETURNING name , type , quantity"; // Defining the SQL query
+        "=$1 WHERE id=$2 RETURNING name, price, brand"; // Defining the SQL query
       const result = await connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result

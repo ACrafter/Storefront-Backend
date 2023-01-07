@@ -2,9 +2,9 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import Express from "express";
 import Auth from "../middlewares/Auth";
-import { OrderStore } from "../models/order";
+import { CartStore } from "../models/cart";
 
-const store = new OrderStore();
+const store = new CartStore();
 
 const index = async (
   req: Express.Request,
@@ -32,12 +32,9 @@ const create = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-    const userid: String = req.body.userid;
-    const weight: Number = Number(req.body.weight);
-    const status: String = req.body.status;
-    const ETA: String = req.body.eta;
+    const userid = req.body.userid;
 
-    const result = await store.create({ userid, weight, status, ETA });
+    const result = await store.create({userid});
     res.json(result);
   } catch (err) {
     res.send(`Error: ${err}`);
@@ -76,27 +73,13 @@ const del = async (
   }
 };
 
-const userOrders = async (
-  req: Express.Request,
-  res: Express.Response
-): Promise<void> => {
-  try {
-    const id: String = req.params.id;
-    const result = await store.getOrdersByUser(id);
-    res.json(result);
-  } catch (err) {
-    res.send(`Error: ${err}`);
-    throw new Error(`Error Couldn't Get Orders: ${err}`);
-  }
-}
-
-  const getOrderProducts = async (
+  const getCartProducts = async (
     req: Express.Request,
     res: Express.Response
   ): Promise<void> => {
     try {
       const id: String = req.params.id;
-      const result = await store.getOrderProducts(id);
+      const result = await store.getCartProducts(id);
       res.json(result);
     } catch (err) {
       res.send(`Error: ${err}`);
@@ -104,14 +87,14 @@ const userOrders = async (
     }
 };
 
-const addOrderProducts = async (
+const addCartProducts = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
   try {
     const order: String = req.params.id;
     const prod: String = req.body.prodid;
-    const result = await store.addOrderProducts(order, prod);
+    const result = await store.addCartProducts(order, prod);
     res.json(result);
   } catch (err) {
     res.send(`Error: ${err}`);
@@ -119,17 +102,16 @@ const addOrderProducts = async (
   }
 };
 
-const ordersRoutes = (app: Express.Application): void => {
-  app.get("/orders", Auth, index);
-  app.post("/orders", Auth, create);
-  app.get("/orders/:id", Auth, show);
-  app.patch("/orders/:id", Auth, update);
-  app.delete("/orders/:id", Auth, del);
+const cartsRoutes = (app: Express.Application): void => {
+  app.get("/carts", Auth, index);
+  app.post("/carts", Auth, create);
+  app.get("/carts/:id", Auth, show);
+  app.patch("/carts/:id", Auth, update);
+  app.delete("/carts/:id", Auth, del);
 
   // Special Methods
-  app.get("/orders/user/:id", Auth, userOrders);
-  app.get("/orders/products/:id", Auth, getOrderProducts);
-  app.post("/orders/products/:id", Auth, addOrderProducts);
+  app.get("/carts/products/:id", Auth, getCartProducts);
+  app.post("/carts/products/:id", Auth, addCartProducts);
 };
 
-export default ordersRoutes;
+export default cartsRoutes;

@@ -40,10 +40,12 @@ const create = async (
 ): Promise<void> => {
   try {
     const name: String = req.body.name;
-    const quantity: Number = Number(req.body.quantity);
-    const type: String = req.body.type;
+    const price: Number = Number(req.body.price);
+    const brand: String = req.body.brand;
+    const description:String = req.body.description;
+    const image: String = req.body.image;
 
-    const result = await store.create({ name, quantity, type });
+    const result = await store.create({ name, price, brand, image, description });
     res.json(result);
   } catch (err) {
     res.send(`Error: ${err}`);

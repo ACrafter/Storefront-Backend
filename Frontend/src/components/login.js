@@ -53,6 +53,7 @@ function Login() {
             if (response.data !== 'None') {
                 token = response.data;
                 console.log(token);
+<<<<<<< HEAD
                 navigate('/');
                 return true;
             }
@@ -61,6 +62,8 @@ function Login() {
                 setnameError("wrong user name or password");
                 setpasswordError("wrong user name or password");
                 return false;
+=======
+>>>>>>> 732931ee01c8630f3eb2a5c160a3fabfaf6bc10d
             }
         })
     }

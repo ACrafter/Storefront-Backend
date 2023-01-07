@@ -28,14 +28,15 @@ describe("User Model", () => {
       const res = await U.create({
         username: "ACrafter",
         firstname: "Ahmed",
-        pass: "123",
-        status: "VIP",
+        password: "123",
+        lastname: "Yasser",
       });
       expect(res).toEqual({
         id: 5,
         username: "ACrafter",
         firstname: "Ahmed",
-        status: "VIP",
+        password: "123",
+        lastname: "Yasser",
       });
     });
   });
@@ -50,7 +51,8 @@ describe("User Model", () => {
       expect(res).toEqual({
         username: "ACrafter",
         firstname: "Ahmed",
-        status: "VIP",
+        password: "123",
+        lastname: "Yasser",
       });
     });
   });
@@ -61,47 +63,13 @@ describe("User Model", () => {
     });
 
     it("should return a single user", async () => {
-      const res = await U.update("5", "username", "Yasser");
+      const res = await U.update("5", "username", "AYCrafter");
       expect(res).toEqual({
-        username: "Yasser",
+        username: "AYCrafter",
         firstname: "Ahmed",
-        status: "VIP",
+        password: "123",
+        lastname: "Yasser",
       });
-    });
-  });
-
-  describe("Get VIP Method", () => {
-    it("should exist", () => {
-      expect(U.getVIP).toBeDefined();
-    });
-
-    it("should return all users with status VIP", async () => {
-      const res = await U.getVIP();
-      expect(res).toEqual([
-        { username: "Yasser", firstname: "Ahmed", status: "VIP" },
-      ]);
-    });
-  });
-
-  describe("Get Frequent Method", () => {
-    it("should exist", () => {
-      expect(U.getFrequent).toBeDefined();
-    });
-
-    it("should return all users with status Frequent", async () => {
-      const res = await U.getFrequent();
-      expect(res).toEqual([]);
-    });
-  });
-
-  describe("Get None Method", () => {
-    it("should exist", () => {
-      expect(U.getNone).toBeDefined();
-    });
-
-    it("should return all users with status None", async () => {
-      const res = await U.getFrequent();
-      expect(res).toEqual([]);
     });
   });
 
