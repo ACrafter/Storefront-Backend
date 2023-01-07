@@ -16,7 +16,7 @@ function Login() {
 
     const handleValidation = (event) => {
         console.log(username);
-        console.log(password.length)
+        console.log(password)
         let formIsValid = true;
 
         if (username === '') {

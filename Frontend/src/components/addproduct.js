@@ -2,12 +2,11 @@ import axios from 'axios';
 import React from 'react';
 import { useState } from 'react'
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
 
 
 
-function Product_to_add() {
-    const [price, setprice] = useState("");
+function Producttoadd() {
+    const [price, setprice] = useState();
     const [name, setname] = useState("");
     const [brand, setbrand] = useState("");
     const [desc, setdesc] = useState("");
@@ -15,15 +14,15 @@ function Product_to_add() {
 
 
     const handleValidation = (event) => {
-        console.log(username);
-        console.log(password.length)
+        console.log(typeof (price));
+        console.log(name)
         let formIsValid = true;
 
         if (name === '') {
             formIsValid = false;
             return false;
         }
-        if (price === '') {
+        if (price < 0) {
             formIsValid = false;
             return false;
         }
@@ -44,9 +43,9 @@ function Product_to_add() {
     };
 
 
-    const validateUser = () => {
-        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users/login", {
-            name: name, price: price, brand: brand
+    const Add = () => {
+        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/products", {
+            name: name, price: price, brand: brand, description: desc, image: img
         }).then((response) => {
             console.log("----------------")
             console.log(response)
@@ -64,7 +63,8 @@ function Product_to_add() {
         e.preventDefault();
 
         if (handleValidation()) {
-            validateUser()
+            console.log("added");
+            Add()
         }
     };
 
@@ -77,42 +77,50 @@ function Product_to_add() {
                         <Card className="shadow">
                             <Card.Body>
                                 <div className="mb-3 mt-md-4">
-                                    <h2 className="fw-bold mb-2 text-uppercase ">DB-project</h2>
-                                    <p className=" mb-5">Please enter your login and password!</p>
+                                    <h2 className="fw-bold mb-2 text-uppercase ">ADD product FORM</h2>
+                                    <p className=" mb-5">add product details</p>
                                     <div className="mb-3">
                                         <Form onSubmit={LoginSubmit}>
-                                            <Form.Group className="mb-3" controlId="formBasicEmail">
+                                            <Form.Group className="mb-3" controlId="formproductName">
                                                 <Form.Label className="text-center">
-                                                    User Name
+                                                    productName
                                                 </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter email" onChange={(event) => setusername(event.target.value)} />
-                                                <small id="emailHelp" className="text-danger form-text">
-                                                    {user_nameError}
-                                                </small>
+                                                <Form.Control type="text" placeholder="Enter product name" onChange={(event) => setname(event.target.value)} />
                                             </Form.Group>
 
-                                            <Form.Group
-                                                className="mb-3"
-                                                controlId="formBasicPassword"
-                                            >
-                                                <Form.Label>Password</Form.Label>
-                                                <Form.Control type="password" placeholder="Password" onChange={(event) => setPassword(event.target.value)} />
-                                                <small id="passworderror" className="text-danger form-text">{passwordError}</small>
+                                            <Form.Group className="mb-3" controlId="formBrand">
+                                                <Form.Label className="text-center">
+                                                    Brand
+                                                </Form.Label>
+                                                <Form.Control type="text" placeholder="Enter product Brand" onChange={(event) => setbrand(event.target.value)} />
+                                            </Form.Group>
+
+                                            <Form.Group className="mb-3" controlId="formdesc">
+                                                <Form.Label className="text-center">
+                                                    description
+                                                </Form.Label>
+                                                <Form.Control type="text" placeholder="Enter product desc" onChange={(event) => setdesc(event.target.value)} />
+                                            </Form.Group>
+
+                                            <Form.Group className="mb-3" controlId="formimage">
+                                                <Form.Label className="text-center">
+                                                    Image URL
+                                                </Form.Label>
+                                                <Form.Control type="text" placeholder="Enter product Image" onChange={(event) => setimg(event.target.value)} />
+                                            </Form.Group>
+
+                                            <Form.Group className="mb-3" controlId="formprice">
+                                                <Form.Label className="text-center">
+                                                    price
+                                                </Form.Label>
+                                                <Form.Control type="number" placeholder="Enter product price" onChange={(event) => setprice(Number(event.target.value))} />
                                             </Form.Group>
                                             <div className="d-grid">
                                                 <Button variant="primary" type="submit">
-                                                    Login
+                                                    add product
                                                 </Button>
                                             </div>
                                         </Form>
-                                        <div className="mt-3">
-                                            <p className="mb-0  text-center">
-                                                Don't have an account?{" "}
-                                                <a href="\singup" className="text-primary fw-bold">
-                                                    Sign Up
-                                                </a>
-                                            </p>
-                                        </div>
                                     </div>
                                 </div>
                             </Card.Body>
@@ -125,4 +133,4 @@ function Product_to_add() {
 };
 
 
-export default Login;
+export default Producttoadd;

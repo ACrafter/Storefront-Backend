@@ -13,6 +13,8 @@ function Navbaar() {
                 <Navbar.Brand href="/">Navbar</Navbar.Brand>
                 <Nav className="me-auto">
                     <Nav.Link href="/">Home</Nav.Link>
+                    <Nav.Link href="/cart">Shopping Cart</Nav.Link>
+                    <Nav.Link href="/orders">Orders</Nav.Link>
                     <Nav.Link href="/About">About</Nav.Link>
                     <Nav.Link href="/login">Login</Nav.Link>
                 </Nav>
