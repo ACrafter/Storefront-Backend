@@ -2,52 +2,88 @@ import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import React from 'react';
 import { useState } from 'react'
 import axios from "axios";
-
+import { useNavigate } from 'react-router-dom';
 
 function Singup() {
 
     const [password, setPassword] = useState("");
-    const [lastname, setlname] = useState("");
+    const [username, setname] = useState("");
     const [firstname, setfname] = useState("");
-    const [email, setEmail] = useState("");
+    const [lastname, setlname] = useState("");
+    //const [email, setEmail] = useState("");
     const [passwordError, setpasswordError] = useState("");
-    const [emailError, setemailError] = useState("");
+    const [lastnameError, setelastnameError] = useState("");
+    const [usernameError, setusernameError] = useState("");
+    const [firstnameError, setfirstnameError] = useState("");
 
-    // const handleValidation = (event) => {
-    //     console.log(username);
-    //     console.log(password)
-    //     let formIsValid = true;
+    const navigate = useNavigate();
 
-    //     if (!username.match(/^\w+[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-    //         formIsValid = false;
-    //         setemailError("Email Not Valid");
-    //         return false;
-    //     } else {
-    //         setemailError("");
-    //         formIsValid = true;
-    //     }
+    const handleValidation = (event) => {
+        console.log(username);
+        console.log(password.length)
+        console.log(lastname)
+        let formIsValid = true;
+        if (username === "") {
+            setusernameError("must enter value");
+            formIsValid = false;
+            return false;
+        }
+        else {
+            setusernameError("");
+            formIsValid = true;
+        }
+        if (firstname === "") {
+            setfirstnameError("must enter value");
+            formIsValid = false;
+            return false;
+        } else {
+            setfirstnameError("");
+            formIsValid = true;
+        }
+        if (lastname === "") {
+            formIsValid = false;
+            setelastnameError("Email Not Valid");
+            return false;
+        } else {
+            setelastnameError("");
+            formIsValid = true;
+        }
 
-    //     if (!password.match(/^[a-zA-Z]{8,22}$/)) {
-    //         formIsValid = false;
-    //         setpasswordError(
-    //             "Only Letters and length must best min 8 Chracters and Max 22 Chracters"
-    //         );
-    //         return false;
-    //     } else {
-    //         setpasswordError("");
-    //         formIsValid = true;
-    //     }
+        if (password.length < 3 || password.length > 20) {
+            formIsValid = false;
+            setpasswordError(
+                "min 3 Chracters and Max 22 Chracters"
+            );
+            return false;
+        } else {
+            setpasswordError("");
+            formIsValid = true;
+        }
 
-    //     return formIsValid;
-    // };
-
-    const Submit = (e) => {
-        e.preventDefault();
-        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users", {uName: email, fName: firstname, pass: password}).then((response) => {
-            console.log(response.data);
-        })   
+        return formIsValid;
     };
 
+    const Submit = () => {
+        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users", {
+            uName: username, fName: firstname,
+            lName: lastname, password: password
+        }).then((response) => {
+            console.log(response.data);
+            if (response.data === 'Error: Error: payload is required') {
+                console.log("sonthing wrong");
+            } else {
+                navigate('/login');
+            }
+
+        })
+    };
+    const SighupSubmit = (e) => {
+        e.preventDefault();
+
+        if (handleValidation()) {
+            Submit()
+        }
+    };
     return (
         <div>
             <Container>
@@ -60,27 +96,33 @@ function Singup() {
                                     <h2 className="fw-bold mb-2 text-uppercase ">DB-project</h2>
                                     <p className=" mb-5">Please enter your login and password!</p>
                                     <div className="mb-3">
-                                        <Form onSubmit={Submit}>
-                                            <Form.Group className="mb-3" controlId="formBasicText">
+                                        <Form onSubmit={SighupSubmit}>
+                                            <Form.Group className="mb-3" controlId="formText">
                                                 <Form.Label className="text-center">
                                                     Username
                                                 </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Username" onChange={(event) => setfname(event.target.value)} />
+                                                <Form.Control type="text" placeholder="Enter Username" onChange={(event) => setname(event.target.value)} />
+                                                <small id="emailHelp" className="text-danger form-text">
+                                                    {usernameError}
+                                                </small>
                                             </Form.Group>
                                             <Form.Group className="mb-3" controlId="formBasicText">
                                                 <Form.Label className="text-center">
-                                                    User firstname
+                                                    First Name
                                                 </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter Username" onChange={(event) => setlname(event.target.value)} />
+                                                <Form.Control type="text" placeholder="Enter First Name" onChange={(event) => setfname(event.target.value)} />
+                                                <small id="emailHelp" className="text-danger form-text">
+                                                    {firstnameError}
+                                                </small>
                                             </Form.Group>
 
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className="text-center">
-                                                    Email address
+                                                    Last Name
                                                 </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter email" onChange={(event) => setEmail(event.target.value)} />
+                                                <Form.Control type="text" placeholder="Enter Last Name" onChange={(event) => setlname(event.target.value)} />
                                                 <small id="emailHelp" className="text-danger form-text">
-                                                    {emailError}
+                                                    {lastnameError}
                                                 </small>
                                             </Form.Group>
 
@@ -94,7 +136,7 @@ function Singup() {
                                             </Form.Group>
                                             <div className="d-grid">
                                                 <Button variant="primary" type="submit">
-                                                    Login
+                                                    Submit
                                                 </Button>
                                             </div>
                                         </Form>

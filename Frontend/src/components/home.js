@@ -3,17 +3,20 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import "../index.css";
 import axios from "axios";
+import ReactLoading from 'react-loading';
+
 
 function Productlist() {
     let [products, setProducts] = useState();
     let [loading, setLoading] = useState(false);
 
-    const fetchProducts = () =>{
+    const fetchProducts = () => {
         return axios.get("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/products")
-        .then(response => {
-            setProducts(response.data)
-            setLoading(true)
-        })
+            .then(response => {
+                console.log(response);
+                setProducts(response.data);
+                setLoading(true);
+            })
     }
 
     useEffect(() => {
@@ -22,12 +25,15 @@ function Productlist() {
 
     console.log(loading);
 
-    return ( loading ?
-        <section className='productlist'>
-            {products.map((product, id) => {
-                return ( <Product image={product.img} title={product.name} price={product.quantity} />)
-            })}
-        </section>: <h1>Not yet</h1>
+    return (loading ?
+        <div>
+            <section className='productlist'>
+                {products.map((product, id) => {
+                    return (<Product image={product.img} title={product.name} price={product.quantity} />)
+                })}
+            </section></div> : <div className='center'>
+            <ReactLoading type='spinningBubbles' color='0xfffff' height={600} width={300} />
+        </div>
     );
 }
 

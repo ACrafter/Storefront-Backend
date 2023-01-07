@@ -1,64 +1,77 @@
 import axios from 'axios';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useState } from 'react'
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
-import { redirect } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
 function Login() {
     const [password, setPassword] = useState("");
-    const [email, setEmail] = useState("");
+    const [username, setusername] = useState("");
     const [passwordError, setpasswordError] = useState("");
-    const [emailError, setemailError] = useState("");
+    const [user_nameError, setnameError] = useState("");
+    const navigate = useNavigate();
 
-    // const handleValidation = (event) => {
-    //     console.log(email);
-    //     console.log(password)
-    //     let formIsValid = true;
 
-    //     if (!email.match(/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/)) {
-    //         formIsValid = false;
-    //         setemailError("Email Not Valid");
-    //         return false;
-    //     } else {
-    //         setemailError("");
-    //         formIsValid = true;
-    //     }
+    const handleValidation = (event) => {
+        console.log(username);
+        console.log(password.length)
+        let formIsValid = true;
 
-    //     if (!password.match(/^[a-zA-Z]{8,22}$/)) {
-    //         formIsValid = false;
-    //         setpasswordError(
-    //             "Only Letters and length must best min 8 Chracters and Max 22 Chracters"
-    //         );
-    //         return false;
-    //     } else {
-    //         setpasswordError("");
-    //         formIsValid = true;
-    //     }
+        if (username === '') {
+            formIsValid = false;
+            setnameError("Must enter user name");
+            return false;
+        } else {
+            setnameError("");
+            formIsValid = true;
+        }
 
-    //     return formIsValid;
-    // };
-    
-    const redirectHome = () => {
-        return redirect("/");
-    }
+        if (password.length < 3 || password.length > 20) {
+            formIsValid = false;
+            setpasswordError(
+                "min 3 Chracters and Max 20 Chracters"
+            );
+            return false;
+        } else {
+            setpasswordError("");
+            formIsValid = true;
+        }
+
+        return formIsValid;
+    };
+
 
     let token;
     const validateUser = () => {
-        return axios({method: 'post', url:"http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users/login", data: {uName: email, pass: password} } )
-        .then((response) => {
-            if(response.data !== 'None'){
+        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users/login", {
+            uName: username, pass: password
+        }).then((response) => {
+            console.log("----------------")
+            console.log(response)
+            if (response.data !== 'None') {
                 token = response.data;
                 console.log(token);
+                navigate('/');
+                return true;
+            }
+            else {
+                console.log("false");
+                setnameError("wrong user name or password");
+                setpasswordError("wrong user name or password");
+                return false;
             }
         })
     }
 
     const LoginSubmit = (e) => {
         e.preventDefault();
-         validateUser();
-        };
+
+        if (handleValidation()) {
+            validateUser()
+        }
+    };
 
     return (
         <div>
@@ -75,11 +88,11 @@ function Login() {
                                         <Form onSubmit={LoginSubmit}>
                                             <Form.Group className="mb-3" controlId="formBasicEmail">
                                                 <Form.Label className="text-center">
-                                                    Email address
+                                                    User Name
                                                 </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter email" onChange={(event) => setEmail(event.target.value)} />
+                                                <Form.Control type="text" placeholder="Enter email" onChange={(event) => setusername(event.target.value)} />
                                                 <small id="emailHelp" className="text-danger form-text">
-                                                    {emailError}
+                                                    {user_nameError}
                                                 </small>
                                             </Form.Group>
 
