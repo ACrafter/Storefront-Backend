@@ -9,8 +9,8 @@ describe("Order Model", () => {
     await U.create({
       username: "ACrafter",
       firstname: "Ahmed",
-      pass: "123",
-      status: "VIP",
+      password: "123",
+      lastname: "VIP",
     });
   });
 

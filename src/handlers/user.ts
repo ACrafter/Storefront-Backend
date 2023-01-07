@@ -58,7 +58,7 @@ const create = async (
     });
 
     const token = sign(password, String(process.env.TOKEN));
-    res.json(token, newUser.id);
+    res.json({userToken: token, userId: newUser.id});
   } catch (err) {
     res.send(`Error: ${err}`);
     throw new Error(`Error Couldn't Create User: ${err}`);
