@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+article {
+    width: 70%;
+    margin: auto;
+}
+
+.cart_box img {
+    width: 120px;
+    height: 120px;
+}
+
+.cart_img {
+    display: flex;
+    width: 400px;
+}
+
+.cart_img p {
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.cart_box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    border-bottom: 2px solid rgb(51, 88, 104);
+    padding-bottom: 5px;
+}
+
+.cart_box div:nth-child(2) button {
+    padding: 5px 10px;
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.cart_box div:nth-child(3) button {
+    padding: 5px 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    border: none;
+    outline: none;
+    color: rgb(255, 255, 255);
+    background-color: rgb(51, 88, 104);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cart_box div:nth-child(3) button:hover {
+    background-color: darkseagreen;
+}
+
+.cart_box div:nth-child(3) span {
+    background-color: lightgreen;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+}
+
+.total span:nth-child(1) {
+    font-size: 2rem;
+    color: rgb(51, 88, 104);
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.total span:nth-child(2) {
+    font-size: 2rem;
+    color: green;
+    font-weight: bold;
+}
+.button {
+    background-color:rgb(51, 88, 104);
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+
+    width: 110px;
+    height: 50px;
+    border: 2px double #cccccc;
+    border-radius: 10px;
+    font-size: 17px;
+    cursor: pointer;
+    margin: 5px;
+    -webkit-transition: all 0.5s;
+    /* add this line, chrome, safari, etc */
+    -moz-transition: all 0.5s;
+    /* add this line, firefox */
+    -o-transition: all 0.5s;
+    /* add this line, opera */
+    transition: all 0.5s;
+    /* add this line */
+}
+.button2 {
+    padding: 5px 10px;
+        font-weight: bold;
+        letter-spacing: 2px;
+        border: none;
+        outline: none;
+        color: #ffffff;
+        background-color:green;
+        border-radius: 5px;
+        cursor: pointer;
+}
+.button3 {
+    padding: 5px 10px;
+    font-weight: bold;
+    letter-spacing: 2px;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    background-color: red;
+    border-radius: 5px;
+    cursor: pointer;
+}
