@@ -38,17 +38,17 @@ const create = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-    try {
-      const name: String = req.body.name;
-      const quantity: Number = Number(req.body.quantity);
-      const type: String = req.body.type;
+  try {
+    const name: String = req.body.name;
+    const quantity: Number = Number(req.body.quantity);
+    const type: String = req.body.type;
 
-      const result = await store.create({ name, quantity, type });
-      res.json(result);
-    } catch (err) {
-      res.send(`Error: ${err}`);
-      throw new Error(`Error Couldn't Create Product: ${err}`);
-    }
+    const result = await store.create({ name, quantity, type });
+    res.json(result);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Create Product: ${err}`);
+  }
 };
 
 const update = async (

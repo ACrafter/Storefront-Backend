@@ -15,29 +15,29 @@ const index = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-    try {
-      const result = await store.index();
-      res.json(result);
-    } catch (err) {
-      res.status(203);
-      res.send(`Error: ${err}`);
-      throw new Error(`Error Couldn't Get Users: ${err}`);
-    }
+  try {
+    const result = await store.index();
+    res.json(result);
+  } catch (err) {
+    res.status(203);
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Get Users: ${err}`);
+  }
 };
 
 const show = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-    try {
-      const result = await store.show(req.params.id);
-      res.json(result);
-      res.send();
-    } catch (err) {
-      res.status(203);
-      res.send(`Error: ${err}`);
-      throw new Error(`Error Couldn't Get User: ${err}`);
-    }
+  try {
+    const result = await store.show(req.params.id);
+    res.json(result);
+    res.send();
+  } catch (err) {
+    res.status(203);
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Get User: ${err}`);
+  }
 };
 
 const create = async (
@@ -48,7 +48,7 @@ const create = async (
     const uName: String = req.body.uName;
     const fName: String = req.body.fName;
     const status: String = "None";
-    const password: String = req.body.password;
+    const password: String = req.body.pass;
 
     await store.create({
       username: uName,
@@ -69,31 +69,31 @@ const update = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-    try {
-      const modify: String = req.body.prop;
-      const newValue: String = req.body.value;
-      const id: String = req.params.id;
+  try {
+    const modify: String = req.body.prop;
+    const newValue: String = req.body.value;
+    const id: String = req.params.id;
 
-      const result = await store.update(id, modify, newValue);
-      res.json(result);
-    } catch (err) {
-      res.send(`Error: ${err}`);
-      throw new Error(`Error Couldn't Update User: ${err}`);
-    }
+    const result = await store.update(id, modify, newValue);
+    res.json(result);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Update User: ${err}`);
+  }
 };
 
 const del = async (
   req: Express.Request,
   res: Express.Response
 ): Promise<void> => {
-    try {
-      const id: String = req.params.id;
-      const result = await store.delete(id);
-      res.json(result);
-    } catch (err) {
-      res.send(`Error: ${err}`);
-      throw new Error(`Error Couldn't Delete User: ${err}`);
-    }
+  try {
+    const id: String = req.params.id;
+    const result = await store.delete(id);
+    res.json(result);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Delete User: ${err}`);
+  }
 };
 
 const validate = async (
@@ -109,9 +109,9 @@ const validate = async (
       const token = sign(pass, String(process.env.TOKEN));
       res.json(token);
     } else {
-      res.send('None'); 
+      res.send("None");
     }
-  } catch (err) {    
+  } catch (err) {
     res.send(`Error: ${err}`);
     throw new Error(`Error Couldn't Login User: ${err}`);
   }

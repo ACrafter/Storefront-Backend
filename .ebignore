@@ -1,0 +1,9 @@
+# Ignore everything:
+*
+
+# Except for these directories:
+!dist/
+!node_modules/
+!package.json
+!package-lock.json
+!database.json

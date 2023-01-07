@@ -68,3 +68,10 @@ body {
     background: var(--clr-primary-1);
     color: var(--clr-primary-5);
 }
+
+.center {
+    margin: auto;
+    width: 50%;
+
+    padding: 100px;
+}

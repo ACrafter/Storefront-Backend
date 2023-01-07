@@ -1,0 +1,104 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.1.0
+  aws-eb: circleci/aws-elastic-beanstalk@2.0.1
+  aws-cli: circleci/aws-cli@3.1.4
+Branches:
+  only:
+    - main
+
+jobs:
+  frontend_build_test:
+    working_directory: ~/storefront-backend/Frontend
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - node/install
+      - run:
+          name: deleting repo dir
+          command: |
+            rm -rf ~/storefront-backend
+      - checkout:
+          path: ~/storefront-backend
+      - run:
+          name: Installing dependencies
+          command: |
+            npm install
+      - run:
+          name: Frontend Tests
+          command: |
+            npm run test
+      - run:
+          name: App Build
+          command: |
+            npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./build
+  backend_build_test:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - node/install
+      - checkout
+      - run:
+          name: Installing dependencies
+          command: |
+            npm install
+      - run:
+          name: Linting
+          command: |
+            npm run lint
+      - run:
+          name: App Build
+          command: |
+            npm run build
+      - run:
+          name: Jasmine Tests
+          command: |
+            echo "npm run test"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - ./*
+  deploy_frontend:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - attach_workspace:
+          at: .
+      - node/install
+      - aws-cli/setup
+      - run:
+          name: App Deploy
+          command: |
+            aws s3 cp --recursive ./build s3://frontend-storefront/
+  deploy_backend:
+    docker:
+      - image: "cimg/base:stable"
+    steps:
+      - attach_workspace:
+          at: ./
+      - aws-eb/setup
+      - run:
+          name: App Deploy
+          command: |
+            eb init -p "Node.js 16 running on 64bit Amazon Linux 2" --region us-east-1 Storefront
+            eb setenv env=production NODE_ENV=production HOST=$HOST DB=$DB TESTDB=$TESTDB USER=$USER PASS=$PASS SECRET=$SECRET SALT_ROUNDS=$SALT_ROUNDS TOKEN=$TOKEN
+            eb deploy Storefront-env
+            eb status
+workflows:
+  version: 2
+  build-test-and-deploy:
+    jobs:
+      - frontend_build_test
+      - backend_build_test
+      - deploy_frontend:
+          requires:
+            - frontend_build_test
+            - backend_build_test
+      - deploy_backend:
+          requires:
+            - frontend_build_test
+            - backend_build_test
