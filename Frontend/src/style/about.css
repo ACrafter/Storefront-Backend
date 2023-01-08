@@ -3,10 +3,7 @@
     background: #f8f8f8;
 }
 
-.row {
-    display: flex;
-    justify-content: start;
-}
+
 
 
 .column .tabs {
@@ -116,6 +113,7 @@
     position: relative;
     border-radius: 2px;
 }
+
 .progress-bar span {
     position: absolute;
     top: -30px;

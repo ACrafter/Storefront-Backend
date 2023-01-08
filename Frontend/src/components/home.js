@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import "../index.css";
+import "../style/index.css";
 import axios from "axios";
 import ReactLoading from 'react-loading';
 

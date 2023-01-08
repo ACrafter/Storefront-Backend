@@ -20,7 +20,7 @@ function Singup() {
 
     const handleValidation = (event) => {
         console.log(username);
-        console.log(password.length)
+        console.log(password)
         console.log(lastname)
         let formIsValid = true;
         if (username === "") {
