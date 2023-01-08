@@ -122,4 +122,16 @@ export class CartStore {
       throw new Error(`Couldn't Add Product whose id:${prod} to Cart whose id:${cart}: ${err}`);
     }
   }
+
+  async getCartId(userid: String): Promise<Cart>{
+    try {
+      const connection = await Client.connect(); // Opening the connection
+      const sql = "SELECT * FROM carts WHERE userid=$1"; // Defining the SQL query
+      const result = await connection.query(sql, [userid]); // Running the SQL query on the DB & storing the result
+      connection.release(); // Closing the connection
+      return result.rows; // Returning the result
+    } catch (err) {
+      throw new Error(`${err}`);
+    }
+  }
 }
