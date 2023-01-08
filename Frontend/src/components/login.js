@@ -6,7 +6,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-function Login() {
+
+
+function Login({ token, settoken }) {
     const [password, setPassword] = useState("");
     const [username, setusername] = useState("");
     const [passwordError, setpasswordError] = useState("");
@@ -14,9 +16,10 @@ function Login() {
     const navigate = useNavigate();
 
 
+
     const handleValidation = (event) => {
-        console.log(username);
-        console.log(password)
+        //console.log(username);
+        //console.log(password)
         let formIsValid = true;
 
         if (username === '') {
@@ -42,22 +45,20 @@ function Login() {
         return formIsValid;
     };
 
-
-    let token;
-    const validateUser = () => {
+    function validateUser() {
         axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users/login", {
             uName: username, pass: password
         }).then((response) => {
             console.log("----------------")
             console.log(response)
             if (response.data !== 'None') {
-                token = response.data;
-                console.log(token);
+                document.cookie = "token=" + response.data;
+                document.cookie = "uID=" + response.data.userId;
                 navigate('/');
                 return true;
             }
             else {
-                console.log("false");
+                //console.log("false");
                 setnameError("wrong user name or password");
                 setpasswordError("wrong user name or password");
                 return false;
@@ -65,9 +66,8 @@ function Login() {
         })
     }
 
-    const LoginSubmit = (e) => {
+    function LoginSubmit(e) {
         e.preventDefault();
-
         if (handleValidation()) {
             validateUser()
         }

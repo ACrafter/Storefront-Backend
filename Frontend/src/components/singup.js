@@ -72,7 +72,9 @@ function Singup() {
             if (response.data === 'Error: Error: payload is required') {
                 console.log("sonthing wrong");
             } else {
-                navigate('/login');
+                document.cookie = "token=" + response.data.userToken;
+                document.cookie = "uID=" + response.data.userId;
+                navigate('/');
             }
 
         })
