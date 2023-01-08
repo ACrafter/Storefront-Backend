@@ -32,6 +32,7 @@ const create = async (
   res: Express.Response
 ): Promise<void> => {
   try {
+
     const userid = req.body.userid;
 
     const result = await store.create({userid});
@@ -102,6 +103,20 @@ const addCartProducts = async (
   }
 };
 
+const getUserCart = async (
+  req: Express.Request,
+  res: Express.Response
+): Promise<void> => {
+  try {
+    const userid: String = req.params.id;
+    const result = await store.getCartId(userid);
+    res.json(result);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Get Orders: ${err}`);
+  }
+};
+
 const cartsRoutes = (app: Express.Application): void => {
   app.get("/carts", Auth, index);
   app.post("/carts", Auth, create);
@@ -112,6 +127,7 @@ const cartsRoutes = (app: Express.Application): void => {
   // Special Methods
   app.get("/carts/products/:id", Auth, getCartProducts);
   app.post("/carts/products/:id", Auth, addCartProducts);
+  app.get("/carts/user/:id", Auth, getUserCart);
 };
 
 export default cartsRoutes;

@@ -29,7 +29,7 @@ function Productlist() {
         <div>
             <section className='productlist'>
                 {products.map((product, id) => {
-                    return (<Product image={product.img} title={product.name} price={product.quantity} />)
+                    return (<Product image={product.image} title={product.name} price={product.price} />)
                 })}
             </section></div> : <div className='center'>
             <ReactLoading type='spinningBubbles' color='0xfffff' height={600} width={300} />
