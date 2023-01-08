@@ -23,6 +23,7 @@ function Navbaar() {
                     <Nav.Link href="/orders">Orders</Nav.Link>
                     <Nav.Link href="/About">About</Nav.Link>
                     <Nav.Link href="/login">Login</Nav.Link>
+                    <Nav.Link href="/add">ADD Product</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>

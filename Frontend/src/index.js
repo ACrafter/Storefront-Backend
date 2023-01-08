@@ -8,7 +8,7 @@ import Productlist from "./components/home"
 import Navbaar from './components/navbar';
 import Error from './components/error';
 import Login from './components/login';
-import About from './components/About';
+import About from './components/about';
 import Singup from './components/singup';
 import Producttoadd from './components/addproduct';
 import Cart from './components/cart';
