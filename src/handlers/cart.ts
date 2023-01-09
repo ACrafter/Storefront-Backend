@@ -19,7 +19,7 @@ const show = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-    const result = await store.show(req.params.id);
+    const result = await store.getOne(req.params.id);
     res.json(result);
   } catch (err) {
     res.send(`Error: ${err}`);
@@ -43,22 +43,6 @@ const create = async (
   }
 };
 
-const update = async (
-  req: Express.Request,
-  res: Express.Response
-): Promise<void> => {
-  try {
-    const modify: String = req.body.prop;
-    const newValue: String = req.body.value;
-    const id: String = req.params.id;
-
-    const result = await store.update(modify, newValue, id);
-    res.json(result);
-  } catch (err) {
-    res.send(`Error: ${err}`);
-    throw new Error(`Error Couldn't Update Order: ${err}`);
-  }
-};
 
 const del = async (
   req: Express.Request,
@@ -93,9 +77,24 @@ const addCartProducts = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-    const order: String = req.params.id;
+    const cart: String = req.params.id;
     const prod: String = req.body.prodid;
-    const result = await store.addCartProducts(order, prod);
+    const result = await store.addCartProducts(cart, prod);
+    res.json(result);
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Get Orders: ${err}`);
+  }
+};
+
+const removeCartProducts = async (
+  req: Express.Request,
+  res: Express.Response
+): Promise<void> => {
+  try {
+    const cart: String = req.params.id;
+    const prod: String = req.body.prodid;
+    const result = await store.deleteCartProducts(cart, prod);
     res.json(result);
   } catch (err) {
     res.send(`Error: ${err}`);
@@ -121,12 +120,12 @@ const cartsRoutes = (app: Express.Application): void => {
   app.get("/carts", Auth, index);
   app.post("/carts", Auth, create);
   app.get("/carts/:id", Auth, show);
-  app.patch("/carts/:id", Auth, update);
   app.delete("/carts/:id", Auth, del);
 
   // Special Methods
   app.get("/carts/products/:id", Auth, getCartProducts);
   app.post("/carts/products/:id", Auth, addCartProducts);
+  app.delete("/carts/products/:id", Auth, removeCartProducts);
   app.get("/carts/user/:id", Auth, getUserCart);
 };
 

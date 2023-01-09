@@ -10,8 +10,8 @@ export interface Cart {
 
 export interface CartProducts {
   id?: String | Number,
-  cartid? : String | Number,
-  productid? : String | Number
+  cartsid? : String | Number,
+  productsid? : String | Number
 }
 
 export class CartStore {
@@ -27,7 +27,7 @@ export class CartStore {
     }
   }
 
-  async getOne(id: Number): Promise<Cart> {
+  async getOne(id: String): Promise<Cart> {
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql = "SELECT * FROM carts WHERE id=$1"; // Defining the SQL query
@@ -35,7 +35,7 @@ export class CartStore {
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
     } catch (err) {
-      throw new Error(`Couldn't retrive Cart whose's id=${id}: ${err}`);
+      throw new Error(`Couldn't retrive Cart`);
     }
   }
 
@@ -52,37 +52,6 @@ export class CartStore {
       return result.rows[0]; // Returning the result
     } catch (err) {
       throw new Error(`Couldn't add Cart: ${err}`);
-    }
-  }
-
-  async show(id: String): Promise<Cart> {
-    try {
-      const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT * FROM carts WHERE id=($1)"; // Defining the SQL query
-      const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
-      connection.release(); // Closing the connection
-      return result.rows[0]; // Returning the result
-    } catch (err) {
-      throw new Error(`Couldn't update Cart who's id=${id}: ${err}`);
-    }
-  }
-
-  async update(
-    modify: String,
-    newValue: String | Number,
-    id: String
-  ): Promise<Cart> {
-    try {
-      const connection = await Client.connect(); // Opening the connection
-      const sql =
-        "UPDATE carts SET " +
-        modify +
-        "=$1 WHERE id=$2 RETURNING *"; // Defining the SQL query
-      const result = await connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
-      connection.release(); // Closing the connection
-      return result.rows[0]; // Returning the result
-    } catch (err) {
-      throw new Error(`Couldn't update Cart who's id=${id}: ${err}`);
     }
   }
 
@@ -117,7 +86,19 @@ export class CartStore {
       const sql = "INSERT INTO cartsproducts (productsid, cartsid) VALUES ($1, $2) RETURNING *"; // Defining the SQL query
       const result = await connection.query(sql, [prod, cart]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
-      return result.rows; // Returning the result
+      return result.rows[0]; // Returning the result
+    } catch (err) {
+      throw new Error(`Couldn't Add Product whose id:${prod} to Cart whose id:${cart}: ${err}`);
+    }
+  }
+
+  async deleteCartProducts(cart: String, prod: String): Promise<CartProducts>{
+    try {
+      const connection = await Client.connect(); // Opening the connection
+      const sql = "DELETE FROM cartsproducts productsid=($1), cartsid=($2) RETURNING *"; // Defining the SQL query
+      const result = await connection.query(sql, [prod, cart]); // Running the SQL query on the DB & storing the result
+      connection.release(); // Closing the connection
+      return result.rows[0]; // Returning the result
     } catch (err) {
       throw new Error(`Couldn't Add Product whose id:${prod} to Cart whose id:${cart}: ${err}`);
     }
@@ -126,10 +107,10 @@ export class CartStore {
   async getCartId(userid: String): Promise<Cart>{
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT * FROM carts WHERE userid=$1"; // Defining the SQL query
+      const sql = "SELECT id FROM carts WHERE userid=$1"; // Defining the SQL query
       const result = await connection.query(sql, [userid]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
-      return result.rows; // Returning the result
+      return result.rows[0]; // Returning the result
     } catch (err) {
       throw new Error(`${err}`);
     }
