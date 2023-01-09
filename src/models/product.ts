@@ -87,4 +87,29 @@ export class ProductStore {
       throw new Error(`Couldn't update Product who's id=${id}: ${err}`);
     }
   }
+
+  // Methods Special To The Model
+ async filterPrice(min:Number, max:Number): Promise<Product[]> {
+    try {
+      const connection = await Client.connect(); // Opening the connection
+      const sql = "SELECT * FROM products WHERE price>=($1) AND price<=($2)"; // Defining the SQL query
+      const result = await connection.query(sql, [min, max]); // Running the SQL query on the DB & storing the result
+      connection.release(); // Closing the connection
+      return result.rows; // Returning the result
+    } catch (err) {
+      throw new Error(`Couldn't filter`);
+    }
+  } 
+
+async filterBrand(name: String): Promise<Product[]> {
+  try {
+    const connection = await Client.connect(); // Opening the connection
+    const sql = "SELECT * FROM products WHERE brand LIKE '($1)%'"; // Defining the SQL query
+    const result = await connection.query(sql, [name]); // Running the SQL query on the DB & storing the result
+    connection.release(); // Closing the connection
+    return result.rows; // Returning the result
+  } catch (err) {
+    throw new Error(`Couldn't filter`);
+  }
+} 
 }

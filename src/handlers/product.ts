@@ -84,12 +84,37 @@ const del = async (
   }
 };
 
+const filter = async (
+  req: Express.Request,
+  res: Express.Response
+): Promise<void> => {
+  try {
+    const filterType = req.params.filter
+    if (filterType === 'price'){
+      const min = Number(req.body.min);
+      const max = Number(req.body.max);
+      const result = await store.filterPrice(min, max);
+      res.json(result); 
+    } else if (filterType === 'brand'){
+      const name = req.body.name;
+      const result = await store.filterBrand(name)
+      res.json(result)
+    } else {
+      res.json('Wrong Filter')
+    }
+  } catch (err) {
+    res.send(`Error: ${err}`);
+    throw new Error(`Error Couldn't Delete Product: ${err}`);
+  }
+};
+
 const productsRoutes = (app: Express.Application): void => {
   app.get("/products", index);
   app.post("/products", Auth, create);
   app.get("/products/:id", show);
   app.patch("/products/:id", Auth, update);
   app.delete("/products/:id", Auth, del);
+  app.post("/products/filter/:filter", filter)
 };
 
 export default productsRoutes;
