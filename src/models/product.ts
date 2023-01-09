@@ -92,7 +92,7 @@ export class ProductStore {
  async filterPrice(min:Number, max:Number): Promise<Product[]> {
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT * FROM products WHERE price>=($1) AND price<=($2)"; // Defining the SQL query
+      const sql = `SELECT * FROM products WHERE price>=${1} AND price<=${2}`; // Defining the SQL query
       const result = await connection.query(sql, [min, max]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows; // Returning the result
@@ -104,8 +104,8 @@ export class ProductStore {
 async filterBrand(name: String): Promise<Product[]> {
   try {
     const connection = await Client.connect(); // Opening the connection
-    const sql = "SELECT * FROM products WHERE brand LIKE '($1)%'"; // Defining the SQL query
-    const result = await connection.query(sql, [name]); // Running the SQL query on the DB & storing the result
+    const sql = `SELECT * FROM products WHERE brand LIKE '${name}%'`; // Defining the SQL query
+    const result = await connection.query(sql); // Running the SQL query on the DB & storing the result
     connection.release(); // Closing the connection
     return result.rows; // Returning the result
   } catch (err) {

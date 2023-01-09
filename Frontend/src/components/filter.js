@@ -5,7 +5,7 @@ import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 
 function Fiter() {
-    const [serch, setSerch] = useState("");
+    const [search, setSearch] = useState("");
     let [products, setProducts] = useState();
     let [loading, setLoading] = useState(false);
 
@@ -19,9 +19,8 @@ function Fiter() {
     };
 
     const Filter_brand = () => {
-        console.log(serch);
         return axios.post(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/products/filter/brand`, {
-            data: { name: serch }
+            data: { name: search }
         }).then(response => {
             //console.log(response);
             setProducts(response.data);
@@ -54,7 +53,7 @@ function Fiter() {
                                                 <Form.Label className="text-center">
                                                     User Name
                                                 </Form.Label>
-                                                <Form.Control type="text" placeholder="Enter email" onChange={(event) => setSerch(event.target.value)} />
+                                                <Form.Control type="text" placeholder="Enter email" onChange={(event) => setSearch(event.target.value)} />
                                             </Form.Group>
                                             <div className="d-grid">
                                                 <Button variant="primary" type="submit">
