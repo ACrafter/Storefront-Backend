@@ -16,7 +16,8 @@ function Addtocart(id, cart, setcart) {
             setcart(response.data);
         })
     } else {
-        console.log("cart: ", cart);
+        console.log("cart:", cart.id);
+        console.log("id:", id);
         axios.post(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products/${cart.id.toString()}`, {
             headers: { authorization: document.cookie.split(';')[0].substring(6) }
             , data: { prodid: id.toString() }

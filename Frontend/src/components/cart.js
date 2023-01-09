@@ -6,14 +6,32 @@ import axios from "axios";
 import ReactLoading from 'react-loading';
 
 
-
-
+function fetchProducts(cart_e, setProducts, setLoading) {
+    return axios.get(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products/${String(cart_e.id)}`, {
+        headers: {
+            authorization: String(document.cookie.split(';')[0].substring(6))
+        }
+    }).then(response => {
+        console.log(response);
+        console.log(setProducts(response.data));
+        setLoading(true);
+    })
+}
+function getuserID(setCart) {
+    return axios({
+        method: 'get',
+        url: `http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/user/${document.cookie.split(';')[1].substring(5).toString()}`,
+        headers: {
+            authorization: String(document.cookie.split(';')[0].substring(6))
+        }
+    })
+}
 
 const Cart = () => {
     const [price, setPrice] = useState(0);
     let [products, setProducts] = useState();
     let [loading, setLoading] = useState(false);
-    let [cart_e, setCart] = useState({});
+    let [cart_e, setCart] = useState("");
 
     const handleRemove = (id) => {
     };
@@ -24,44 +42,22 @@ const Cart = () => {
         setPrice(ans);
     };
 
-    const getuserID = () => {
-        return axios({
-            method: 'get',
-            url: `http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/user/${document.cookie.split(';')[1].substring(5).toString()}`,
-            headers: {
-                authorization: String(document.cookie.split(';')[0].substring(6))
-            }
-        }).then(response => {
-            console.log(response.data);
-            setCart(response.data);
-            console.log(cart_e);
-        })
-    }
 
-    const fetchProducts = () => {
-        console.log("-------------", cart_e);
-        return axios.get(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products/${String(cart_e)}`, {
-            headers: {
-                authorization: String(document.cookie.split(';')[0].substring(6))
-            }
-        }).then(response => {
-            console.log(response);
-            setProducts(response.data);
-            setLoading(true);
-        })
-    }
+
+
 
     useEffect(() => {
         async function x() {
-            await getuserID();
-            await console.log(cart_e);
+            const myData = await getuserID(setCart);
+            setCart(myData.data);
 
         }
         x()
-        console.log(cart_e);
-        fetchProducts();
-        // handlePrice();
-    }, [])
+        console.log("here:", cart_e);
+        if (cart_e !== "") {
+            console.log(fetchProducts(cart_e, setProducts, setLoading));
+        }
+    }, [cart_e, setProducts, setLoading])
 
     return (loading ?
         <article>
