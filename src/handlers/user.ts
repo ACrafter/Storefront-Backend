@@ -107,7 +107,7 @@ const validate = async (
     const result = await store.authenticate(uName, pass);
     if (result) {
       const token = sign(pass, String(process.env.TOKEN));
-      res.json(token);
+      res.json({userToken: token, userId: result.id});
     } else {
       res.send("None");
     }
