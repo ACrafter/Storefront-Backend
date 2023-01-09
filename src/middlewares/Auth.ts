@@ -7,7 +7,7 @@ const Auth = (
   next: Express.NextFunction
 ): void => {
   try {
-    const token = req.params.token;
+    const token = String(req.headers.authorization);
     verify(token, String(process.env.TOKEN));
     next();
   } catch (err) {
