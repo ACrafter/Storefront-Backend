@@ -2,10 +2,13 @@ import React from 'react';
 import { useState, useEffect } from "react";
 import { data } from '../products'
 import "../style/cart.css"
+import axios from "axios";
+import ReactLoading from 'react-loading';
 
 const Cart = () => {
     const [price, setPrice] = useState(0);
-
+    let [products, setProducts] = useState();
+    let [loading, setLoading] = useState(false);
     const handleRemove = (id) => {
     };
 
@@ -19,9 +22,23 @@ const Cart = () => {
         handlePrice();
     });
 
-    return (
+    const fetchProducts = () => {
+        return axios.get("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products", {
+            userid: Number(document.cookie.split(';')[1].substring(5)), token: document.cookie.split(';')[0].substring(6)
+        }).then(response => {
+            console.log(response);
+            setProducts(response.data);
+            setLoading(true);
+        })
+    }
+
+    useEffect(() => {
+        fetchProducts();
+    }, [])
+
+    return (loading ?
         <article>
-            {data.map((item) => (
+            {products.map((item) => (
                 <div className="cart_box" key={item.id}>
                     <div className="cart_img">
                         <img src={item.img} alt="" />
@@ -43,7 +60,9 @@ const Cart = () => {
                 <span>EGP - {price}</span>
             </div>
             <button class="button" type="button" onclick="alert('You will Successfully created a button')">Check out</button>
-        </article>
+        </article> : <div className='center'>
+            <ReactLoading type='spinningBubbles' color='0xfffff' height={600} width={300} />
+        </div>
     );
 };
 
