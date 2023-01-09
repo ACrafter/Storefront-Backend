@@ -13,6 +13,7 @@ import Singup from './components/singup';
 import Producttoadd from './components/addproduct';
 import Cart from './components/cart';
 import Order from './components/Orders';
+import Fiter from './components/filter';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const HeaderRoute = () => {
@@ -33,6 +34,7 @@ const HeaderRoute = () => {
 				<Route exact path='/cart' element={<Cart />} />
 				<Route exact path='/add' element={<Producttoadd />} />
 				<Route exact path='/orders' element={<Order />} />
+				<Route exact path='/filter' element={<Fiter />} />
 				<Route exact path='/login' element={<Login token={userID} settoken={setuserID} />} />
 				<Route path='*' element={<Error />} />
 

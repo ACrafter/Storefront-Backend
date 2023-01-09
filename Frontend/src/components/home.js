@@ -10,14 +10,16 @@ function Addtocart(id, cart, setcart) {
     console.log("cart", cart);
     if (cart === "") {
         axios.get(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/user/${document.cookie.split(';')[1].substring(5).toString()}`, {
-            token: String(document.cookie.split(';')[0].substring(6))
+            headers: { authorization: document.cookie.split(';')[0].substring(6) }
         }).then((response) => {
             console.log(response);
-            setcart(response.data)
+            setcart(response.data);
         })
     } else {
+        console.log("cart: ", cart);
         axios.post(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products/${cart.id.toString()}`, {
-            token: document.cookie.split(';')[0].substring(6), prodid: id.toString()
+            headers: { authorization: document.cookie.split(';')[0].substring(6) }
+            , data: { prodid: id.toString() }
         }).then((response) => {
             console.log(response);
         })
@@ -26,11 +28,14 @@ function Addtocart(id, cart, setcart) {
 }
 
 
+
 function Productlist() {
     let [products, setProducts] = useState();
     let [cart, setcart] = useState("");
     let [loading, setLoading] = useState(false);
     const [searchTerm, setSearchTerm] = useState('')
+
+
     const fetchProducts = () => {
         return axios.get("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/products")
             .then(response => {
@@ -39,9 +44,6 @@ function Productlist() {
                 setLoading(true);
             })
     }
-
-
-
     useEffect(() => {
         fetchProducts();
     }, [])
@@ -52,6 +54,9 @@ function Productlist() {
         <div>
             <div className='Search'>
                 <input type="text" className='Search' placeholder="Search..." onChange={event => { setSearchTerm(event.target.value) }} />
+            </div>
+            <div className='Search'>
+                <a href="/filter" class="btn btn-primary">Filter By Brand</a>
             </div>
             <div className='productlist'>
                 {products.filter((val) => {
@@ -64,7 +69,7 @@ function Productlist() {
                 }
                 ).map((val, key) => {
                     return (
-                        <Product key={val.id} id={val.id} image={val.image} title={val.name} price={val.price} cart={cart} setcart={setcart} />
+                        <Product key={val.id} brand={val.brand} id={val.id} image={val.image} title={val.name} price={val.price} cart={cart} setcart={setcart} />
                     );
                 })}
             </div>
@@ -77,12 +82,13 @@ function Productlist() {
 
 
 
-function Product({ id, image, title, price, cart, setcart }) {
+function Product({ id, image, title, price, cart, setcart, brand }) {
     return (
         <Card style={{ width: '23rem' }}>
             <Card.Img height={300} variant="top" src={image} />
             <Card.Body>
                 <Card.Title>{title}</Card.Title>
+                <Card.Subtitle>Brand: {brand}</Card.Subtitle>
                 <Card.Subtitle>Cost: {price} EGP</Card.Subtitle>
                 <Button variant="primary" className="btn-primary" onClick={() => { Addtocart(id, cart, setcart) }}>Add to cart</Button>
             </Card.Body>
