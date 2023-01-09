@@ -97,7 +97,7 @@ export class ProductStore {
       connection.release(); // Closing the connection
       return result.rows; // Returning the result
     } catch (err) {
-      throw new Error(`Couldn't filter`);
+      throw new Error(`Couldn't filter:${err}`);
     }
   } 
 
@@ -109,7 +109,7 @@ async filterBrand(name: String): Promise<Product[]> {
     connection.release(); // Closing the connection
     return result.rows; // Returning the result
   } catch (err) {
-    throw new Error(`Couldn't filter`);
+    throw new Error(`Couldn't filter: ${err}`);
   }
 } 
 }
