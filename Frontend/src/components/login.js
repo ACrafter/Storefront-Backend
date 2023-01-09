@@ -50,6 +50,7 @@ function Login({ token, settoken }) {
             uName: username, pass: password
         }).then((response) => {
             if (response.data !== 'None') {
+                console.log(response.data);
                 document.cookie = "token=" + response.data.userToken;
                 document.cookie = "uID=" + response.data.userId;
                 navigate('/');
