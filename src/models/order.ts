@@ -8,13 +8,13 @@ export interface Order {
   userid?: String | Number;
   weight: Number;
   status: String;
-  ETA?: String;
+  eta?: String;
 }
 
 export interface OrderProducts {
   id?: String | Number,
-  orderid? : String | Number,
-  productid? : String | Number
+  ordersid? : String | Number,
+  productsid? : String | Number
 }
 
 export class OrderStore {
@@ -30,7 +30,7 @@ export class OrderStore {
     }
   }
 
-  async getOne(id: Number): Promise<Order> {
+  async getOne(id: String): Promise<Order> {
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql = "SELECT * FROM orders WHERE id=$1"; // Defining the SQL query
@@ -44,7 +44,7 @@ export class OrderStore {
 
   async create(orderInfo: Order): Promise<Order> {
     const userid = orderInfo.userid;
-    const eta = orderInfo.ETA;
+    const eta = orderInfo.eta;
     const weight = orderInfo.weight;
     const status = orderInfo.status;
 
@@ -57,18 +57,6 @@ export class OrderStore {
       return result.rows[0]; // Returning the result
     } catch (err) {
       throw new Error(`Couldn't add Order: ${err}`);
-    }
-  }
-
-  async show(id: String): Promise<Order> {
-    try {
-      const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT * FROM orders WHERE id=($1)"; // Defining the SQL query
-      const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
-      connection.release(); // Closing the connection
-      return result.rows[0]; // Returning the result
-    } catch (err) {
-      throw new Error(`Couldn't update Order whose id=${id}: ${err}`);
     }
   }
 
@@ -122,6 +110,18 @@ export class OrderStore {
       const sql = "INSERT INTO ordersproducts (productsid, ordersid) VALUES ($1, $2) RETURNING *"; // Defining the SQL query
       const result = await connection.query(sql, [prod, order]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
+      return result.rows[0]; // Returning the result
+    } catch (err) {
+      throw new Error(`Couldn't Add Product whose id:${prod} to Order whose id:${order}`);
+    }
+  }
+
+  async removeOrderProducts(order: String, prod: String): Promise<OrderProducts>{
+    try {
+      const connection = await Client.connect(); // Opening the connection
+      const sql = "DELETE FROM ordersproducts WHERE productsid=($1) AND ordersid=($2)"; // Defining the SQL query
+      const result = await connection.query(sql, [prod, order]); // Running the SQL query on the DB & storing the result
+      connection.release(); // Closing the connection
       return result.rows; // Returning the result
     } catch (err) {
       throw new Error(`Couldn't Add Product whose id:${prod} to Order whose id:${order}`);
@@ -131,7 +131,7 @@ export class OrderStore {
   async getOrderProducts(id: String): Promise<Product[]> {
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT productid FROM ordersproducts WHERE orderid=($1);"; // Defining the SQL query
+      const sql = "SELECT productsid FROM ordersproducts WHERE ordersid=($1);"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows; // Returning the result

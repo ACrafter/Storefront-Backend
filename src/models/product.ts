@@ -7,7 +7,7 @@ export interface Product {
   name?: String;
   price?:Number;
   brand?: String;
-  type?: String;
+  quantity?: String | null,
   description?: String;
   image?: unknown;
 }
@@ -26,7 +26,7 @@ export class ProductStore {
     }
   }
 
-  async show(id: String): Promise<Product> {
+  async getOne(id: String): Promise<Product> {
     try {
       const connection = await Client.connect(); // Opening the connection
       const sql = "SELECT * FROM products WHERE id=$1"; // Defining the SQL query
@@ -67,7 +67,7 @@ export class ProductStore {
       const sql =
         "UPDATE products SET " +
         modify +
-        "=$1 WHERE id=$2 RETURNING name, price, brand"; // Defining the SQL query
+        "=$1 WHERE id=$2 RETURNING *"; // Defining the SQL query
       const result = await connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result

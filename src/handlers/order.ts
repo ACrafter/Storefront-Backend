@@ -19,7 +19,7 @@ const show = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-    const result = await store.show(req.params.id);
+    const result = await store.getOne(req.params.id);
     res.json(result);
   } catch (err) {
     res.send(`Error: ${err}`);
@@ -35,9 +35,9 @@ const create = async (
     const userid: String = req.body.userid;
     const weight: Number = Number(req.body.weight);
     const status: String = req.body.status;
-    const ETA: String = req.body.eta;
+    const eta: String = req.body.eta;
 
-    const result = await store.create({ userid, weight, status, ETA });
+    const result = await store.create({ userid, weight, status, eta });
     res.json(result);
   } catch (err) {
     res.send(`Error: ${err}`);
@@ -59,20 +59,6 @@ const update = async (
   } catch (err) {
     res.send(`Error: ${err}`);
     throw new Error(`Error Couldn't Update Order: ${err}`);
-  }
-};
-
-const del = async (
-  req: Express.Request,
-  res: Express.Response
-): Promise<void> => {
-  try {
-    const id: String = req.params.id;
-    const result = await store.delete(id);
-    res.json(result);
-  } catch (err) {
-    res.send(`Error: ${err}`);
-    throw new Error(`Error Couldn't Delete Order: ${err}`);
   }
 };
 
@@ -124,7 +110,6 @@ const ordersRoutes = (app: Express.Application): void => {
   app.post("/orders", Auth, create);
   app.get("/orders/:id", Auth, show);
   app.patch("/orders/:id", Auth, update);
-  app.delete("/orders/:id", Auth, del);
 
   // Special Methods
   app.get("/orders/user/:id", Auth, userOrders);

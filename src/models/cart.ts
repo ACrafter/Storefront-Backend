@@ -95,12 +95,12 @@ export class CartStore {
   async deleteCartProducts(cart: String, prod: String): Promise<CartProducts>{
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "DELETE FROM cartsproducts productsid=($1), cartsid=($2) RETURNING *"; // Defining the SQL query
+      const sql = "DELETE FROM cartsproducts WHERE productsid=($1) AND cartsid=($2)"; // Defining the SQL query
       const result = await connection.query(sql, [prod, cart]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result
     } catch (err) {
-      throw new Error(`Couldn't Add Product whose id:${prod} to Cart whose id:${cart}: ${err}`);
+      throw new Error(`Couldn't Delete Product whose id:${prod} to Cart whose id:${cart}: ${err}`);
     }
   }
 

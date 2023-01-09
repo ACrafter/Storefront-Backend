@@ -1,86 +1,126 @@
 import { OrderStore } from "../../models/order";
 import { UserStore } from "../../models/user";
+import { ProductStore } from "../../models/product";
 
-describe("Order Model", () => {
-  const O = new OrderStore();
-  const U = new UserStore();
+describe("Order Model Tests", () => {
+    const O = new OrderStore();
+    const U = new UserStore();
+    const P = new ProductStore();
+    let uid:Number | undefined;
+    let orderid: String | Number | undefined;
+    let pid: String | Number | undefined;
 
-  beforeAll(async () => {
-    await U.create({
-      username: "ACrafter",
-      firstname: "Ahmed",
-      password: "123",
-      lastname: "VIP",
-    });
-  });
+    beforeAll(async () =>{
+        const user = await U.create({
+            username: "ACrafter",
+            firstname: "Ahmed",
+            lastname: "Yasser",
+            password: "123"
+        })
+        
+        uid = user.id
 
-  afterAll(async () => {
-    await U.delete("2");
-  });
+        const product = await P.create({
+            name: 'test',
+            price: 10,
+            brand: 'test',
+            description: 'test',
+            image: 'test'
+        })
 
-  describe("Index Method", () => {
-    it("should exist", () => {
-      expect(O.index).toBeDefined();
-    });
+        pid = product.id
+    })
 
-    it("should return a list of all orders", async () => {
-      const res = await O.index();
-      expect(res).toEqual([]);
-    });
-  });
+    afterAll(async () => {
+        await U.delete(String(uid))
+    })
 
-  describe("Create Method", () => {
-    it("should exist", () => {
-      expect(O.create).toBeDefined();
-    });
+    describe("Methods Existance", () => {
+        it('Index Method', () => {
+            expect(O.index).toBeDefined()
+        })
 
-    it("should return a newly created user", async () => {
-      const res = await O.create({ userid: "2", weight: 50, status: "Active" });
-      expect(res).toEqual({ id: 2, userid: 2, weight: 50, status: "Active" });
-    });
-  });
+        it('Show Method', () => {
+            expect(O.getOne).toBeDefined()
+        })
 
-  describe("Show Method", () => {
-    it("should exist", () => {
-      expect(O.show).toBeDefined();
-    });
+        it('Create Method', () => {
+            expect(O.create).toBeDefined()
+        })
 
-    it("should return a newly created order", async () => {
-      const res = await O.show("2");
-      expect(res).toEqual({ userid: 2, weight: 50, status: "Active" });
-    });
-  });
+        it("Update Method", () => {
+            expect(O.update).toBeDefined()
+        })
 
-  describe("Update Method", () => {
-    it("should exist", () => {
-      expect(O.update).toBeDefined();
-    });
+        it("Delete Method", () => {
+            expect(O.delete).toBeDefined()
+        })
+        it('Cartproducts Method (get)', () => {
+            expect(O.getOrdersByUser).toBeDefined()
+        })
 
-    it("should return the updated user", async () => {
-      const res = await O.update("status", "Completed", "2");
-      expect(res).toEqual({ userid: 2, weight: 50, status: "Completed" });
-    });
-  });
+        it('Cartproducts Method (add)', () => {
+            expect(O.getOrderProducts).toBeDefined()
+        })
 
-  describe("Get User's Order  Method", () => {
-    it("should exist", () => {
-      expect(O.getOrdersByUser).toBeDefined();
-    });
+        it('CartId Method (get)', () => {
+            expect(O.addOrderProducts).toBeDefined()
+        })
+    })
 
-    it("should return the updated user", async () => {
-      const res = await O.getOrdersByUser("2");
-      expect(res).toEqual([{ id: 2, weight: 50, status: "Completed" }]);
-    });
-  });
+    describe("Methods Functionality", () => {
+        it('Index Method', async () => {
+            const res = await O.index()
+            expect(res).toEqual([])
+        })
 
-  describe("Delete Method", () => {
-    it("should exist", () => {
-      expect(O.delete).toBeDefined();
-    });
+        it('Show Method (undefined)', async () => {
+            const res = await O.getOne("1") 
+            expect(res).toBeUndefined()
+        })
 
-    it("should return a list of all remaining orders", async () => {
-      const res = await O.delete("2");
-      expect(res).toEqual([]);
-    });
-  });
-});
+        it('Create Method',async () => {
+            const res = await O.create({userid: uid, eta: "2 hours", weight: 60, status: "Active"})
+            orderid = res.id
+            expect(res).toEqual({id:orderid, userid: uid, eta: "2 hours", weight: 60, status: "Active"})
+        })
+
+        it('Show Method (defined)',async () => {
+            const res = await O.getOne("1")
+            orderid = res.id
+            expect(res).toEqual({id:orderid, userid: uid, eta: "2 hours", weight: 60, status: "Active"})
+        })
+
+        it('Update Method',async () => {
+            const res = await O.update("status", "Completed", String(orderid))
+            expect(res).toEqual({id:orderid, userid: uid, eta: "2 hours", weight: 60, status: "Completed"})
+        })
+
+        it('Get User Orders',async () => {
+            const res = await O.getOrdersByUser(String(uid))
+            expect(res).toEqual([{id:orderid, userid: uid, eta: "2 hours", weight: 60, status: "Completed"}])
+        })
+
+        it('Get Products',async () => {
+            const res = await O.getOrderProducts(String(orderid))
+            expect(res).toEqual([])
+        })
+
+        it('Add Products', async () => {
+            const res = await O.addOrderProducts(String(orderid), String(pid))
+            expect(res).toEqual({id:1, productsid: (pid), ordersid: (orderid)})
+        })
+
+        it('Remove Product',async () => {
+            await O.removeOrderProducts(String(orderid), String(pid))
+            const res = await O.getOrderProducts(String(orderid))
+            expect(res).toEqual([])
+        })
+
+        it('Delete Order',async () => {
+            await O.delete(String(orderid))
+            const res = await O.index()
+            expect(res).toEqual([])
+        })
+    })
+})

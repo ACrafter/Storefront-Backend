@@ -72,7 +72,7 @@ export class UserStore {
       const sql =
         "UPDATE users SET " +
         modify +
-        "=$1 WHERE id=$2 RETURNING username, firstname"; // Defining the SQL query
+        "=$1 WHERE id=$2 RETURNING *"; // Defining the SQL query
       const result = await connection.query(sql, [newValue, id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows[0]; // Returning the result

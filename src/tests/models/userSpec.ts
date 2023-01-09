@@ -2,11 +2,7 @@ import { UserStore } from "../../models/user";
 
 describe("User Model", () => {
   const U = new UserStore();
-
-  beforeAll(async () => {
-    await U.delete("3");
-    await U.delete("4");
-  });
+  let uid:Number | undefined;
 
   describe("Index Method", () => {
     it("should exist", () => {
@@ -31,8 +27,11 @@ describe("User Model", () => {
         password: "123",
         lastname: "Yasser",
       });
+
+      uid = res.id;
+      res.password = "123"
       expect(res).toEqual({
-        id: 5,
+        id: uid,
         username: "ACrafter",
         firstname: "Ahmed",
         password: "123",
@@ -47,8 +46,10 @@ describe("User Model", () => {
     });
 
     it("should return a single user", async () => {
-      const res = await U.show("5");
+      const res = await U.show(String(uid));
+      res.password = '123'
       expect(res).toEqual({
+        id: uid,
         username: "ACrafter",
         firstname: "Ahmed",
         password: "123",
@@ -63,8 +64,10 @@ describe("User Model", () => {
     });
 
     it("should return a single user", async () => {
-      const res = await U.update("5", "username", "AYCrafter");
+      const res = await U.update(String(uid), "username", "AYCrafter");
+      res.password = '123'
       expect(res).toEqual({
+        id: uid,
         username: "AYCrafter",
         firstname: "Ahmed",
         password: "123",
@@ -79,7 +82,7 @@ describe("User Model", () => {
     });
 
     it("should return a single user", async () => {
-      const res = await U.delete("5");
+      const res = await U.delete(String(uid));
       expect(res).toEqual([]);
     });
   });
