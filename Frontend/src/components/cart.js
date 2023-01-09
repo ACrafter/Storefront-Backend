@@ -14,7 +14,7 @@ function fetchProducts(cart_e, setProducts, setLoading) {
     }).then(response => {
         console.log(response);
         console.log(setProducts(response.data));
-        setLoading(true);
+        //setLoading(true);
     })
 }
 function getuserID(setCart) {
@@ -27,9 +27,16 @@ function getuserID(setCart) {
     })
 }
 
+function Getinfo(setinfo, products) {
+    products.map((val, key) => {
+        console.log("fff:", val.productsid)
+    })
+}
+
 const Cart = () => {
     const [price, setPrice] = useState(0);
     let [products, setProducts] = useState();
+    let [info, setinfo] = useState();
     let [loading, setLoading] = useState(false);
     let [cart_e, setCart] = useState("");
 
@@ -50,21 +57,26 @@ const Cart = () => {
         async function x() {
             const myData = await getuserID(setCart);
             setCart(myData.data);
+            if (cart_e !== "") {
 
+                await fetchProducts(cart_e, setProducts, setLoading);
+                if (products !== {}) {
+                    await Getinfo(setinfo, products);
+                }
+            }
         }
+
         x()
-        console.log("here:", cart_e);
-        if (cart_e !== "") {
-            console.log(fetchProducts(cart_e, setProducts, setLoading));
-        }
+        //console.log("here:", cart_e);
+
     }, [cart_e, setProducts, setLoading])
 
     return (loading ?
         <article>
-            {products.map((item) => (
+            {info.map((item) => (
                 <div className="cart_box" key={item.id}>
                     <div className="cart_img">
-                        <img src={item.img} alt="" />
+                        <img src={item.image} alt="" />
                         <p>{item.title}</p>
                     </div>
                     <div>

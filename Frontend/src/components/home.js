@@ -57,7 +57,7 @@ function Productlist() {
                 <input type="text" className='Search' placeholder="Search..." onChange={event => { setSearchTerm(event.target.value) }} />
             </div>
             <div className='Search'>
-                <a href="/filter" class="btn btn-primary">Filter By Brand</a>
+                <a href="/filter" className="btn btn-primary">Filter By Brand</a>
             </div>
             <div className='productlist'>
                 {products.filter((val) => {
