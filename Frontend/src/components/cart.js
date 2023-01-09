@@ -24,7 +24,7 @@ function getCookie(name) {
   }
 
 
-function getuserID(setCart) {
+function getuserID() {
     console.log( String(document.cookie.split(';')[1].split('=')[1]))
     // console.log(String(document.cookie.split(';')[1].substring(6)))
     return axios({
@@ -67,7 +67,6 @@ const Cart = () => {
             const myData = await getuserID(setCart);
             setCart(myData.data);
             if (cart_e !== "") {
-
                 await fetchProducts(cart_e, setProducts, setLoading);
                 if (products !== {}) {
                     await Getinfo(setinfo, products);

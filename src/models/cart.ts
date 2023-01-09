@@ -71,7 +71,7 @@ export class CartStore {
   async getCartProducts(id: String): Promise<Cart[]> {
     try {
       const connection = await Client.connect(); // Opening the connection
-      const sql = "SELECT * FROM cartsproducts WHERE cartsid=($1)"; // Defining the SQL query
+      const sql = "SELECT * FROM cartsproducts JOIN products ON productsid = products.id WHERE cartsid = ($1)"; // Defining the SQL query
       const result = await connection.query(sql, [id]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
       return result.rows; // Returning the result
@@ -110,6 +110,7 @@ export class CartStore {
       const sql = "SELECT id FROM carts WHERE userid=$1"; // Defining the SQL query
       const result = await connection.query(sql, [userid]); // Running the SQL query on the DB & storing the result
       connection.release(); // Closing the connection
+      console.log(result.rows[0]);
       return result.rows[0]; // Returning the result
     } catch (err) {
       throw new Error(`${err}`);
