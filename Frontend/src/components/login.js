@@ -49,16 +49,13 @@ function Login({ token, settoken }) {
         axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users/login", {
             uName: username, pass: password
         }).then((response) => {
-            console.log("----------------")
-            console.log(response)
             if (response.data !== 'None') {
-                document.cookie = "token=" + response.data;
+                document.cookie = "token=" + response.data.userToken;
                 document.cookie = "uID=" + response.data.userId;
                 navigate('/');
                 return true;
             }
             else {
-                //console.log("false");
                 setnameError("wrong user name or password");
                 setpasswordError("wrong user name or password");
                 return false;

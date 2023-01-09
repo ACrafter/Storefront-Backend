@@ -17,12 +17,21 @@ function fetchProducts(cart_e, setProducts, setLoading) {
         //setLoading(true);
     })
 }
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+
 function getuserID(setCart) {
+    console.log( String(document.cookie.split(';')[1].split('=')[1]))
+    // console.log(String(document.cookie.split(';')[1].substring(6)))
     return axios({
         method: 'get',
-        url: `http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/user/${document.cookie.split(';')[1].substring(5).toString()}`,
+        url: `http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/user/${getCookie('uID')}`,
         headers: {
-            authorization: String(document.cookie.split(';')[0].substring(6))
+            authorization: getCookie('token')
         }
     })
 }
