@@ -21,11 +21,11 @@ function getCookie(name) {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(';').shift();
-  }
+}
 
 
 function getuserID() {
-    console.log( String(document.cookie.split(';')[1].split('=')[1]))
+    console.log(String(document.cookie.split(';')[1].split('=')[1]))
     // console.log(String(document.cookie.split(';')[1].substring(6)))
     return axios({
         method: 'get',
@@ -36,10 +36,15 @@ function getuserID() {
     })
 }
 
-function Getinfo(setinfo, products) {
-    products.map((val, key) => {
-        console.log("fff:", val.productsid)
-    })
+function Getinfo(setinfo, val, info) {
+    console.log("fff:", val.productsid)
+    return axios.get(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/products/${val.productsid}`)
+        .then(response => {
+            console.log(response.data);
+            setinfo(response.data);
+            console.log("info:", info);
+            //setLoading(true);
+        })
 }
 
 const Cart = () => {
@@ -54,7 +59,7 @@ const Cart = () => {
 
     const handlePrice = () => {
         let ans = 0;
-        data.map((item) => (ans += item.price));
+        info.map((item) => (ans += item.price));
         setPrice(ans);
     };
 
@@ -64,13 +69,22 @@ const Cart = () => {
 
     useEffect(() => {
         async function x() {
-            const myData = await getuserID(setCart);
-            setCart(myData.data);
+            const myData = await getuserID();
+            await setCart(myData.data);
+            await console.log(myData);
             if (cart_e !== "") {
                 await fetchProducts(cart_e, setProducts, setLoading);
                 if (products !== {}) {
-                    await Getinfo(setinfo, products);
+                    await products.map((val, key) => {
+                        Getinfo(setinfo, val, info);
+                        console.log("info:", info);
+
+                    })
+
+                    await setLoading(true);
+
                 }
+                handlePrice();
             }
         }
 
@@ -81,7 +95,7 @@ const Cart = () => {
 
     return (loading ?
         <article>
-            {info.map((item) => (
+            {products.map((item) => (
                 <div className="cart_box" key={item.id}>
                     <div className="cart_img">
                         <img src={item.image} alt="" />
