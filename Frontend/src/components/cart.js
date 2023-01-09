@@ -5,10 +5,16 @@ import "../style/cart.css"
 import axios from "axios";
 import ReactLoading from 'react-loading';
 
+
+
+
+
 const Cart = () => {
     const [price, setPrice] = useState(0);
     let [products, setProducts] = useState();
     let [loading, setLoading] = useState(false);
+    let [cart, setcart] = useState("");
+
     const handleRemove = (id) => {
     };
 
@@ -18,13 +24,32 @@ const Cart = () => {
         setPrice(ans);
     };
 
-    useEffect(() => {
-        handlePrice();
-    });
+    function GetuserID() {
+        const token = String(document.cookie.split(';')[0].substring(6));
+        if (cart === "") {
+            // axios.get(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/user/38`, {
+            //     token: "eyJhbGciOiJIUzI1NiJ9.MTIzNDU2Nzg.UcGZ6Yn0DX_gpss1cjpdhBw7AmEtxeLX3hpYecR1Bf4"
+            // }).then((response) => {
+            //     console.log(response);
+            //     setcart(response.data)
+            // })
+            console.log(token);
+            axios({
+                method: 'get',
+                url: 'http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/user/38',
+                data: {
+                    token: token
+                }
+            }).then((response) => {
+                console.log(response);
+                setcart(response.data)
+            })
+        }
+    }
 
     const fetchProducts = () => {
-        return axios.get("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products", {
-            userid: Number(document.cookie.split(';')[1].substring(5)), token: document.cookie.split(';')[0].substring(6)
+        return axios.get(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products/1`, {
+            token: document.cookie.split(';')[0].substring(6)
         }).then(response => {
             console.log(response);
             setProducts(response.data);
@@ -33,7 +58,11 @@ const Cart = () => {
     }
 
     useEffect(() => {
+        if (cart === "") {
+            GetuserID();
+        }
         fetchProducts();
+        handlePrice();
     }, [])
 
     return (loading ?

@@ -74,6 +74,11 @@ function Singup() {
             } else {
                 document.cookie = "token=" + response.data.userToken;
                 document.cookie = "uID=" + response.data.userId;
+                axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts", {
+                    userid: Number(document.cookie.split(';')[1].substring(5)), token: document.cookie.split(';')[0].substring(6)
+                }).then((response) => {
+                    console.log(response);
+                })
                 navigate('/');
             }
 

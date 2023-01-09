@@ -9,24 +9,23 @@ import "../style/Search.css";
 function Addtocart(id, cart, setcart) {
     console.log("cart", cart);
     if (cart === "") {
-        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts", {
-            userid: Number(document.cookie.split(';')[1].substring(5)), token: document.cookie.split(';')[0].substring(6)
+        axios.get(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/user/${document.cookie.split(';')[1].substring(5).toString()}`, {
+            token: String(document.cookie.split(';')[0].substring(6))
         }).then((response) => {
             console.log(response);
             setcart(response.data)
         })
     } else {
-        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products/", {
-            order: cart.id.toString(), token: document.cookie.split(';')[0].substring(6), prod: id.toString()
+        axios.post(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products/${cart.id.toString()}`, {
+            token: document.cookie.split(';')[0].substring(6), prodid: id.toString()
         }).then((response) => {
             console.log(response);
-            //setcart(response.data)
         })
     }
     console.log(id);
-
-
 }
+
+
 function Productlist() {
     let [products, setProducts] = useState();
     let [cart, setcart] = useState("");
