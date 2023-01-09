@@ -26,7 +26,7 @@ const show = async (
   res: Express.Response
 ): Promise<void> => {
   try {
-    const result = await store.show(req.params.id);
+    const result = await store.getOne(req.params.id);
     res.json(result);
   } catch (err) {
     res.send(`Error: ${err}`);

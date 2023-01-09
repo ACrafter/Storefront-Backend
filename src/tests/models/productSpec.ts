@@ -1,47 +1,69 @@
 import { ProductStore } from "../../models/product";
 
-describe("Product Model", () => {
-  const P = new ProductStore();
+describe("Product Model Tests", () => {
+    const P = new ProductStore();
+    let prodId: undefined | Number;
 
-  describe("Index Method", () => {
-    it("should exist", () => {
-      expect(P.index).toBeDefined();
-    });
+    describe("Methods Existance", () => {
+        it('Index Method', () => {
+            expect(P.index).toBeDefined()
+        })
 
-    it("should return a list of all products", async () => {
-      const res = await P.index();
-      expect(res).toEqual([]);
-    });
-  });
+        it('Show Method', () => {
+            expect(P.getOne).toBeDefined()
+        })
 
-  describe("Create Method", () => {
-    it("should exist", () => {
-      expect(P.create).toBeDefined();
-    });
+        it('Create Method', () => {
+            expect(P.create).toBeDefined()
+        })
 
-    it("should return the new product", async () => {
-      const res = await P.create({
-        name: "Spoon",
-        type: "Ketchen",
-        price: 100,
-      });
-      expect(res).toEqual({
-        id: 2,
-        name: "Spoon",
-        type: "Ketchen",
-        price: 100,
-      });
-    });
-  });
+        it("Update Method", () => {
+            expect(P.update).toBeDefined()
+        })
 
-  describe("Show Method", () => {
-    it("should exist", () => {
-      expect(P.show).toBeDefined();
-    });
+        it("Delete Method", () => {
+            expect(P.delete).toBeDefined()
+        })
+    })
 
-    it("should return a product with a given id", async () => {
-      const res = await P.show("2");
-      expect(res).toEqual({ name: "Spoon", type: "Ketchen", price: 100 });
-    });
-  });
-});
+    describe("Methods Functionality", () => {
+        it("Index Method", async () => {
+            const res = await P.index()
+            expect(res).toEqual([{ id: 2, name: 'test', price: 10, brand: 'test', quantity: null, description: 'test', image: 'test' }])
+        })
+
+        it("Show Method (undefined)", async () => {
+            const res = await P.getOne("3")
+            expect(res).toBeUndefined()
+        })
+
+        it("Create Method",async () => {
+            const res = await P.create({
+                name: 'Prod',
+                price: 10,
+                brand: 'Bra',
+                description: 'Desc',
+                image: 'test'
+            })
+            
+            prodId = res.id
+            expect(res).toEqual({id: prodId, name: 'Prod', price: 10, quantity: null, brand: 'Bra', description: 'Desc', image:'test'})
+        })
+
+        it("Show Method (defined)", async () => {
+            const res = await P.getOne(String(prodId))
+            expect(res).toEqual({id: prodId, name: 'Prod', price: 10, quantity: null, brand: 'Bra', description: 'Desc', image: 'test' })
+        })
+
+        it("Update Method",async () => {
+            const res = await P.update(String(prodId), "price", 15)
+            expect(res).toEqual({id: prodId, name: 'Prod', price: 15, quantity: null, brand: 'Bra', description: 'Desc', image:'test'})
+        })
+
+        it('Delete Product',async () => {
+            await P.delete(String(prodId))
+            const res = await P.index()
+            expect(res).toEqual([{ id: 2, name: 'test', price: 10, brand: 'test', quantity: null, description: 'test', image: 'test' }])
+        })
+    })
+})

@@ -37,7 +37,6 @@ const HeaderRoute = () => {
 				<Route path='*' element={<Error />} />
 
 			</Routes>
-
 		</Router >
 
 	);
