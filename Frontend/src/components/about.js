@@ -1,5 +1,5 @@
 import React,{Fragment,useState} from 'react'
-import "./About.css"
+import "../style/about.css"
 
 const About = () => {
   const [ toggleTab, setToggleTab] = useState(1)
