@@ -3,14 +3,14 @@ import { Pool } from "pg";
 
 dotenv.config();
 
-const { HOST, DB, TESTDB, USER, PASS, ENV } = process.env;
+const { HOST, TESTHOST, DB, TESTDB, USER, PASS, ENV } = process.env;
 
 let Client: any;
 
 if (ENV === "test") {
   console.log('TESTING');
   Client = new Pool({
-    host: HOST,
+    host: TESTHOST,
     database: TESTDB,
     user: USER,
     password: PASS,
