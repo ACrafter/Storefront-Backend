@@ -7,7 +7,7 @@
     "start": "node dist/index",
     "build": "npx tsc",
     "server": "nodemon src/index.ts",
-    "test": "cross-env-shell ENV=test \"db-migrate down --e test --c 5 &&  db-migrate --e test up && npm run build && jasmine\"",
+    "test": "cross-env ENV=test \"db-migrate down --e test --c 5 &&  db-migrate --e test up && npm run build && jasmine\"",
     "eslint": "eslint src",
     "eslint:fix": "npm run eslint -- --fix",
     "prettier": "npx prettier --write src",

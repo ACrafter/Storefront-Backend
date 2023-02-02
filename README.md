@@ -43,7 +43,8 @@ The API supports three main tables Users, Orders, Products. Where a 1:N relation
 ## ENV Variables
 
 - ENV="dev"
-- HOST="localhost"
+- HOST="database-1.co4akogllbuk.us-east-1.rds.amazonaws.com"
+- HOSTEST="database-2.co4akogllbuk.us-east-1.rds.amazonaws.com"
 - DB = "market"
 - TESTDB = "markettest"
 - USER = "postgres"
@@ -58,6 +59,14 @@ The API supports three main tables Users, Orders, Products. Where a 1:N relation
 
 - Server Port: 3000
 - PSQL Port: 5432
+
+---
+
+## CircleCI Variables
+
+- AWS_ACCESS_KEY: AKIAWCNUZXZ7ABBVXIHJ
+- AWS_ACCESS_KEY_ID: AKIAWCNUZXZ7ABBVXIHJ
+- AWS_DEFAULT_REGION:us-east-1
 
 ---
 
