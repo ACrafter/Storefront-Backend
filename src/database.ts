@@ -8,14 +8,13 @@ const { HOST, TESTHOST, DB, TESTDB, USER, PASS, ENV } = process.env;
 let Client: any;
 
 if (ENV === "test") {
-  console.log('TESTING');
   Client = new Pool({
     host: TESTHOST,
     database: TESTDB,
     user: USER,
     password: PASS,
   });
-} else {
+} else {  
   Client = new Pool({
     host: HOST,
     database: DB,
