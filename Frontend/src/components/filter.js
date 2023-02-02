@@ -24,7 +24,7 @@ function Fiter() {
 
     const Filter_brand = () => {
         console.log(search.toUpperCase());
-        return axios.post(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/products/filter/brand`, { name: search }).then(response => {
+        return axios.post(`http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/products/filter/brand`, { name: search }).then(response => {
             //console.log(response);
             setProducts(response.data);
             console.log(response);

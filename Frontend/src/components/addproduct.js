@@ -44,7 +44,7 @@ function Producttoadd() {
 
 
     const Add = () => {
-        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/products", {
+        axios.post("http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/products", {
             name: name, price: price, brand: brand, description: desc, image: img, token: token
 
         }).then((response) => {

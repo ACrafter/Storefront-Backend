@@ -7,7 +7,7 @@ import ReactLoading from 'react-loading';
 
 
 function fetchProducts(cart_e, setProducts, setLoading) {
-    return axios.get(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products/${String(cart_e.id)}`, {
+    return axios.get(`http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/carts/products/${String(cart_e.id)}`, {
         headers: {
             authorization: String(document.cookie.split(';')[0].substring(6))
         }
@@ -29,7 +29,7 @@ function getuserID() {
     // console.log(String(document.cookie.split(';')[1].substring(6)))
     return axios({
         method: 'get',
-        url: `http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/user/${getCookie('uID')}`,
+        url: `http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/carts/user/${getCookie('uID')}`,
         headers: {
             authorization: getCookie('token')
         }
@@ -38,7 +38,7 @@ function getuserID() {
 
 function Getinfo(setinfo, val, info) {
     console.log("fff:", val.productsid)
-    return axios.get(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/products/${val.productsid}`)
+    return axios.get(`http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/products/${val.productsid}`)
         .then(response => {
             console.log(response.data);
             setinfo(response.data);

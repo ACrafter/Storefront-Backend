@@ -64,7 +64,7 @@ function Singup() {
     };
 
     const Submit = () => {
-        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users", {
+        axios.post("http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/users", {
             uName: username, fName: firstname,
             lName: lastname, password: password
         }).then((response) => {
@@ -74,7 +74,7 @@ function Singup() {
             } else {
                 document.cookie = "token=" + response.data.userToken;
                 document.cookie = "uID=" + response.data.userId;
-                axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts", {
+                axios.post("http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/carts", {
                     userid: Number(document.cookie.split(';')[1].substring(5))
                 }, {
                     headers: { authorization: document.cookie.split(';')[0].substring(6) }

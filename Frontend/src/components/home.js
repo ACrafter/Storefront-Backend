@@ -9,7 +9,7 @@ import "../style/Search.css";
 function Addtocart(id, cart, setcart) {
     console.log("cart", cart);
     if (cart === "") {
-        axios.get(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/user/${document.cookie.split(';')[1].substring(5).toString()}`, {
+        axios.get(`http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/carts/user/${document.cookie.split(';')[1].substring(5).toString()}`, {
             headers: { authorization: document.cookie.split(';')[0].substring(6) }
         }).then((response) => {
             console.log(response);
@@ -18,7 +18,7 @@ function Addtocart(id, cart, setcart) {
     } else {
         console.log("cart:", cart.id);
         console.log("id:", id);
-        axios.post(`http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/carts/products/${cart.id.toString()}`, {
+        axios.post(`http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/carts/products/${cart.id.toString()}`, {
             headers: { authorization: document.cookie.split(';')[0].substring(6) }
             , data: { prodid: id.toString() }
         }).then((response) => {
@@ -38,7 +38,7 @@ function Productlist() {
 
 
     const fetchProducts = () => {
-        return axios.get("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/products")
+        return axios.get("http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/products")
             .then(response => {
                 //console.log(response);
                 setProducts(response.data);

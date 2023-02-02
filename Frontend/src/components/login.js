@@ -46,7 +46,7 @@ function Login({ token, settoken }) {
     };
 
     function validateUser() {
-        axios.post("http://storefront-env.eba-qcpsqmqz.us-east-1.elasticbeanstalk.com/users/login", {
+        axios.post("http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/users/login", {
             uName: username, pass: password
         }).then((response) => {
             if (response.data !== 'None') {
