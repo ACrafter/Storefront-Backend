@@ -1,0 +1,4 @@
+Pipeline Steps:
+    1) Git Push Command.
+    2) Backend Build, Frontend Build.
+    3) Deploy Frontend, Deploy Backend.

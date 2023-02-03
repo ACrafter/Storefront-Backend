@@ -1,0 +1,7 @@
+Services used:
+    AWS Services:
+        1) RDS, for hosting the DB
+        2) S3, for hosting the React App (Frontend)
+        3) Elastic Beanstalk, for hosting the Express API (Backend)
+    
+    CircleCi, for CI/CD
