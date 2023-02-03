@@ -110,7 +110,7 @@ const filter = async (
 
 const productsRoutes = (app: Express.Application): void => {
   app.get("/products", index);
-  app.post("/products", Auth, create);
+  app.post("/products", create);
   app.get("/products/:id", show);
   app.patch("/products/:id", Auth, update);
   app.delete("/products/:id", Auth, del);
