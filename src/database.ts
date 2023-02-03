@@ -3,23 +3,23 @@ import { Pool } from "pg";
 
 dotenv.config();
 
-const { host, testhost, db, user, pass, env } = process.env;
+const { HOST, TESTHOST, DB, USER, PASS, env } = process.env;
 
 let Client: any;
 
 if (env === "test") {
   Client = new Pool({
-    host: testhost,
-    database: db,
-    user,
-    password: pass
+    host: TESTHOST,
+    database: DB,
+    user: USER,
+    password: PASS,
   });
 } else {  
   Client = new Pool({
-    host,
-    database: db,
-    user,
-    password: pass
+    host: HOST,
+    database: DB,
+    user: USER,
+    password: PASS,
   });
 }
 
