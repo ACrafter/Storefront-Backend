@@ -44,8 +44,10 @@ function Producttoadd() {
 
 
     const Add = () => {
-        axios.post("http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/products", {
-            name: name, price: price, brand: brand, description: desc, image: img, token: token
+        axios.post("http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com/products", {headers: {
+            authorization: String(document.cookie.split(';')[0].substring(6))
+        },
+            name: name, price: price, brand: brand, description: desc, image: img
 
         }).then((response) => {
             console.log("----------------")

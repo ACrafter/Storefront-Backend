@@ -55,9 +55,10 @@ The API supports three main tables Users, Orders, Products. Where a 1:N relation
 
 ---
 
-## Project Ports
+## Project Ports/Links
 
-- Server Port: 3000
+- Server URL: http://storebackend-env.eba-9cttnj2w.us-east-1.elasticbeanstalk.com
+- Site URL: http://my-store-frontend.s3-website-us-east-1.amazonaws.com/
 - PSQL Port: 5432
 
 ---
